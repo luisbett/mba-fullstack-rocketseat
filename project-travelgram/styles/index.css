@@ -1,1 +1,27 @@
 @import url('./global.css');
+
+header {
+    padding: 24px;
+    background-color: var(--surface-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+header a {
+    text-decoration: none;
+    font: var(--text);
+    color: var(--text-color-secondary);
+}
+
+.minhas-viagens {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
