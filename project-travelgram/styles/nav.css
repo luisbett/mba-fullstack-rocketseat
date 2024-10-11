@@ -1,0 +1,45 @@
+header {
+    padding: 24px;
+    background-color: var(--surface-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+header a {
+    text-decoration: none;
+    font: var(--text);
+    color: inherit;
+}
+
+.avatar {
+    width: 40px;
+}
+
+.minhas-viagens {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.minhas-viagens:hover a {
+    color: var(--brand-color);
+    text-decoration: underline;
+}
+
+.explorar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.explorar:hover a {
+    color: var(--brand-color);
+    text-decoration: underline;
+}

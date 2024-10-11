@@ -1,0 +1,16 @@
+footer {
+    background-color: var(--surface-color);
+    padding: 25px 32px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.copyright {
+    font: 14px/150% var(--font-family)
+}
+
+.termos {
+    font: 14px/150% var(--font-family);
+    display: flex;
+    gap: 16px;
+}
