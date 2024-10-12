@@ -3,3 +3,18 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+:root {
+    --brand-color-light: #60A5FA;
+    --brand-color-dark: #1D4ED8;
+    --bg-color: #0F172A;
+    --stroke-color: #1E293B;
+    --text-color-primary: #F1F5F9;
+    --text-color-secondary: #CBD5E1;
+    --font-family: "Archivo", sans-serif;
+    --text-heading-lg: 800 24px/135% var(--font-family);
+    --text-heading-md: 800 16px/140% var(--font-family);
+    --text-heading-sm: 800 14px/140% var(--font-family);
+    --text-span: 600 14px/145% var(--font-family);
+    --text-p: 400 14px/160% var(--font-family);
+}
