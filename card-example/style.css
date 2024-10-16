@@ -1,0 +1,41 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card::before {
+    content: "";
+    inset: 0;
+    top: 50%;
+    position: absolute;
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        black 100%
+    );
+}
+
+.card .texto {
+    position: absolute;
+    color: white;
+    bottom: 0;
+    padding: 30px;
+}
+
+.card .texto h1 {
+    margin-bottom: 15px;
+}
