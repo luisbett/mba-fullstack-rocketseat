@@ -3,3 +3,29 @@
     margin: 0;
     box-sizing: border-box;
 }
+
+:root {
+    --brand-light: #F67841;
+    --brand-mid: #F3541C;
+    --brand-dark: #E43A12;
+    --text-primary: #292524;
+    --text-secondary: #57534E;
+    --text-tertiary: #8F8881;
+    --text-highlight: #E43A12;
+    --surface-primary: #FFFFFF;
+    --surface-secondary: #FEE7D6;
+    --surface-disabled: #E7E5E4;
+    --stroke-default: #D6D3D1;
+    --stroke-highlight: #F3541C;
+    --semantic-error: #DC2626;
+    --font-family: "Poppins", sans-serif;
+    --text-sm: 700 1rem/120% var(--font-family);
+    --text-md: 700 1.25rem/120% var(--font-family);
+    --text-lg: 700 1.5rem/120% var(--font-family);
+    --text-xl: 700 2rem/120% var(--font-family);
+}
+
+/*img {
+    max-width: 100%;
+    height: auto;
+}*/

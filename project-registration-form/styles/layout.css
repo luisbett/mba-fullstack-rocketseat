@@ -1,0 +1,16 @@
+.content {
+    display: flex;
+}
+
+main {
+    width: 50%;
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
+aside {
+    width: 50%;
+    height: 100vh;
+    background-color: var(--surface-secondary);
+    gap: 2rem;
+}

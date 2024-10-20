@@ -1,0 +1,22 @@
+aside {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+aside h1 {
+    font: 600 2.5rem/125% var(--font-family);
+}
+
+aside span {
+    color: var(--text-highlight);
+}
+
+aside div {
+    gap: .5rem;
+}
+
+aside p {
+    font: 400 1rem/150% var(--font-family);
+    color: #57534E;
+}
