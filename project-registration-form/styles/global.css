@@ -23,6 +23,7 @@
     --text-md: 700 1.25rem/120% var(--font-family);
     --text-lg: 700 1.5rem/120% var(--font-family);
     --text-xl: 700 2rem/120% var(--font-family);
+    --text-default: 400 1rem/150% var(--font-family);
 }
 
 /*img {

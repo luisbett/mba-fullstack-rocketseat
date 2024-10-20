@@ -12,7 +12,91 @@
 <body>
     <div class="content">
         <main class="container">
-
+            <div class="header">
+                <div class="button">
+                    <img src="./assets/icons/arrow-left-02.svg" alt="Arrow left icon">
+                    <span>Voltar</span>
+                </div>
+                <div class="title">
+                    <h2>Formulário de matrícula</h2>
+                    <p>Preencha os dados abaixo para matricular seu filho na escola de educação infantil Estrelas do Amanhã.</p>
+                </div>
+            </div>
+            <fieldset class="child-info">
+                <legend>Informações da criança</legend>
+                <div class="input-wrapper">
+                    <label for="fullname">Nome completo</label>
+                    <input type="text" name="fullname" id="fullname">
+                </div>
+                <div class="input-wrapper">
+                    <label for="birth-date">Data de nascimento</label>
+                    <input type="date" name="birth-date" id="birth-date">
+                </div>
+                <div class="select-wrapper">
+                    <label for="gender">Sexo</label>
+                    <select name="gender" id="gender">
+                        <option value="male">Masculino</option>
+                        <option value="female">Feminino</option>
+                    </select>
+                </div>
+                <div class="textarea-wrapper">
+                    <label for="medical-info">Informações médicas</label>
+                    <textarea name="medical-info" id="medical-info"rows="6"></textarea>
+                </div>
+                <div class="input-wrapper">
+                    <label for="birth-certificate">Certidão de nascimento</label>
+                    <input type="file" name="birth-certificate" id="birth-certificate">
+                </div>
+            </fieldset>
+            <fieldset class="address-info">
+                <legend>Endereço residencial</legend>
+                <div class="input-wrapper">
+                    <label for="cep">CEP</label>
+                    <input type="text" name="cep" id="cep">
+                </div>
+                <div class="street-and-number">
+                    <div class="input-wrapper">
+                        <label for="street">Rua</label>
+                        <input type="text" name="street" id="cep">
+                    </div>
+                    <div class="input-wrapper">
+                        <label for="number">Número</label>
+                        <input type="text" name="number" id="number">
+                    </div>
+                </div>
+                <div class="city-and-state">
+                    <div class="input-wrapper">
+                        <label for="city">Cidade</label>
+                        <input type="text" name="city" id="cep">
+                    </div>
+                    <div class="input-wrapper">
+                        <label for="state">Estado</label>
+                        <input type="text" name="state" id="state">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="child-responsible">
+                <legend>Informações do responsável</legend>
+                <div class="input-wrapper">
+                    <label for="responsible">Nome do responsável</label>
+                    <input type="text" name="responsible" id="responsible">
+                </div>
+                <div class="input-wrapper">
+                    <label for="phone">Telefone</label>
+                    <input type="tel" name="phone" id="phone">
+                </div>
+                <div class="input-wrapper">
+                    <label for="email">E-mail</label>
+                    <input type="email" name="email" id="email">
+                </div>
+            </fieldset>
+            <fieldset class="registration-options">
+                <legend>Opções de matrícula</legend>
+                <div class="input-wrapper">
+                    <label for="shift">Selecione o turno:</label>
+                    <input type="checkbox" name="shift" id="shift">
+                </div>
+            </fieldset>
         </main>
         <aside class="container">
             <div>
