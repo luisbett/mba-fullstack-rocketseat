@@ -1,0 +1,71 @@
+.card {
+    margin-top: 0.5rem;
+    padding: 1.5rem 1.25rem 1.25rem 1.25rem;
+    background-color: var(--color-gray-100);
+    border: 1.5px solid var(--color-gray-300);
+    border-radius: 1rem;
+
+    & .header-container {
+        display: flex;
+
+        & .header {
+            width: 60%;
+            
+            & span {
+                display: inline-block;
+                margin-bottom: 0.25rem;
+                font: var(--font-subtitle-sm);
+                color: var(--color-gray-500);
+            }
+
+            & p {
+                font: var(--font-text-xm);
+                color: var(--color-gray-500);
+            }
+        }
+
+        & .tag {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: auto;
+            padding: 3.5px 8px;
+            background-color: var(--color-gray-300);
+            border-radius: 63rem;
+
+            & span {
+                font: var(--font-subtitle-sm);
+                color: var(--color-gray-500);
+            }
+        }
+    }
+
+    & .slots {
+        margin-top: 1.25rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.43rem;
+
+        & .slot-card {
+            width: 3.5rem;
+            height: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-gray-200);
+            border-radius: 0.75rem;
+
+            & img {
+                width: 40px;
+                height: auto;
+                object-fit: cover;
+            }
+        }
+
+        & .slot-gift img {
+            width: 20px;
+            height: auto;
+            opacity: 0.35;
+        }
+    }
+}

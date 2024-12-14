@@ -1,0 +1,64 @@
+.history {
+    margin-top: 0.5rem;
+    padding: 1.50rem 1.25rem 1.25rem 1.25rem;
+    background-color: var(--color-gray-100);
+    border: 1.5px solid var(--color-gray-300);
+    border-radius: 1rem;
+
+    & .history-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        & span {
+            font: var(--font-subtitle-sm);
+            color: var(--color-gray-500);
+        }
+
+        & p {
+            font: var(--font-text-xm);
+            color: var(--color-gray-500);
+        }
+    }
+
+    & .history-appointments {
+        margin-top: 1rem;
+        border-top: 1px solid var(--color-gray-200);
+        padding-top: 0.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+        & .appointment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            & .appointment-item-title {
+                & span {
+                    font: var(--font-subtitle-sm);
+                    color: var(--color-gray-600);
+                }
+
+                & p {
+                    font: var(--font-text-xm);
+                    color: var(--color-gray-500);
+                }
+            }
+
+            & .appointment-item-icon {
+                padding: 0.25rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 999px;
+                background-color: #45b4421f;
+
+                & img {
+                    width: 21px;
+                    height: auto;
+                }
+            }
+        }
+    }
+}
