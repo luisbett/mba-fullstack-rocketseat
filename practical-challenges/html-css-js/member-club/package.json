@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "scripts.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "json-server --watch db.json --port 3333"
   },
   "keywords": [],
   "author": "",
