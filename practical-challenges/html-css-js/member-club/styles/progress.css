@@ -26,7 +26,7 @@
         & .progress-bar {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: start;
             gap: 0.75rem;
 
             & progress {
@@ -63,6 +63,40 @@
         & img {
             width: 30px;
             height: auto;
+        }
+    }
+}
+
+@media (width >= 80rem) {
+    .progress {
+        grid-column: 3/6;
+        grid-row: 4/5;
+        margin-top: 0px;
+
+        & .progress-content {
+            width: 100%;
+            gap: 0.75rem;
+
+            & span {
+                font: var(--font-text-md);
+                
+                & strong {
+                    font: var(--font-title-md);
+                }
+            }
+
+            & .progress-bar progress {
+                width: 80%;
+            }
+        }
+
+        & .progress-item {
+            width: 72px;
+            height: 72px;
+
+            & img {
+                width: 2.8rem;
+            }
         }
     }
 }

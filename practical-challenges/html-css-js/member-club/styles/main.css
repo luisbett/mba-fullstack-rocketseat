@@ -1,51 +1,16 @@
 main {
     margin-top: 1.25rem;
-
-    & .user {
-        padding: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        background-color: var(--color-gray-100);
-        border: 1.5px solid var(--color-gray-300);
-        border-radius: 1rem;
-
-        & .profile-pic {
-            display: inline-block;
-            padding: 1.5px;
-            background: var(--color-gradient-base);
-            border-radius: 10px;
-
-            & img {
-                width: 56px;
-                height: auto;
-                display: block;
-                object-fit: cover;
-                border-radius: 7.5px;
-                border: 1.5px solid var(--color-gray-100);
-            }
-        }
-
-        & .user-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-
-            & span {
-                font: var(--font-title-sm);
-                color: var(--color-gray-600);
-            }
-
-            & p {
-                font: var(--font-text-xm);
-                color: var(--color-gray-500);
-            }
-        }
-    }
 }
 
 @media (width >= 80rem) {
     main {
         margin-top: 4rem;
+        max-width: 57rem;
+        max-height: 30rem;
+        margin-inline: auto;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        gap: 1rem;
     }
 }
