@@ -3,6 +3,7 @@
         {
             "id": "124-537-835-230",
             "name": "Natália Miranda",
+            "picture": "./src/assets/Picture1.jpg",
             "clientSince": "18/09/2023",
             "appointmentHistory": [
                 {
@@ -39,6 +40,7 @@
         {
             "id": "207-245-699-104",
             "name": "Capitão Nascimento",
+            "picture": "./src/assets/Picture2.png",
             "clientSince": "12/04/2023",
             "appointmentHistory": [
                 {
@@ -67,6 +69,7 @@
         {
             "id": "523-114-876-908",
             "name": "Sansão",
+            "picture": "./src/assets/Picture3.jpg",
             "clientSince": "15/07/2023",
             "appointmentHistory": [
                 {
