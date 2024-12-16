@@ -7,6 +7,11 @@ const clientSince = document.querySelector(".user-info p")
 const clientImage = document.querySelector(".profile-pic img")
 const totalHaircuts = document.querySelector(".history-header p")
 const appointments = document.querySelector(".history-appointments")
+const haircutsLeft = document.querySelector(".progress-content span strong")
+const haircutsProgress = document.querySelector(".progress-bar progress")
+const haircutsOfLeft = document.querySelector(".progress-bar p")
+const tagNumber = document.querySelector(".tag span")
+const slots = document.querySelector(".slots")
 
 input.addEventListener("input", (event) => {
     if(event.target.value !== '') {
@@ -35,8 +40,6 @@ async function fetchClientByID() {
         clientName.textContent = data.name
         clientSince.textContent = `Cliente desde ${data.clientSince}`
         clientImage.setAttribute("src", data.picture)
-
-        console.log(data.appointmentHistory)
 
         //Set appointment history
         totalHaircuts.textContent = `${data.appointmentHistory.length} ${data.appointmentHistory.length > 1 ? 'cortes' : 'corte'}`
@@ -78,5 +81,59 @@ async function fetchClientByID() {
             //Add appointment to container
             appointments.append(divAppointment)
         })
+
+        //Set progress info
+        haircutsLeft.textContent = data.loyaltyCard.cutsRemaining
+        haircutsProgress.setAttribute("max", data.loyaltyCard.cutsNeeded)
+        haircutsProgress.setAttribute("value", data.loyaltyCard.totalCuts)
+        haircutsOfLeft.textContent = `${data.loyaltyCard.totalCuts} de ${data.loyaltyCard.cutsNeeded}`
+
+        //Set card info
+        tagNumber.textContent = `ID: ${data.id}`
+        
+        //Set slots
+        slots.innerHTML = ""
+
+        //Goes through every haircut already done
+        for(let i = 0; i < data.loyaltyCard.totalCuts; i++) {
+            
+            //Create div wrapper
+            const divSlot = document.createElement("div")
+            divSlot.classList.add("slot-card")
+            
+            const iconSlot = document.createElement("img")
+            iconSlot.setAttribute("src", "./src/assets/pin-check.png")
+            iconSlot.setAttribute("alt", "Pin check logo")
+
+            divSlot.append(iconSlot)
+
+            slots.append(divSlot)
+        }
+
+        //Goes through every haircut left
+        for(let i = 0; i < data.loyaltyCard.cutsRemaining; i++) {
+            
+            //Check if it is the last div
+            if(data.loyaltyCard.cutsRemaining === i + 1) {
+                //Create div wrapper
+                const divSlot = document.createElement("div")
+                divSlot.classList.add("slot-card")
+                divSlot.classList.add("slot-gift")
+
+                const iconSlot = document.createElement("img")
+                iconSlot.setAttribute("src", "./src/assets/icons/gift-solid.svg")
+                iconSlot.setAttribute("alt", "Pin gift logo")
+
+                divSlot.append(iconSlot)
+
+                slots.append(divSlot)
+            } else {
+                //Create div wrapper
+                const divSlot = document.createElement("div")
+                divSlot.classList.add("slot-card")
+
+                slots.append(divSlot)
+            }
+        }
     }
 }
