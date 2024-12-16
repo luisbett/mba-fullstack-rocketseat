@@ -134,6 +134,10 @@ async function fetchClientByID() {
 
                 slots.append(divSlot)
             }
+
+            if(data.loyaltyCard.cutsRemaining === 1) {
+                alert("Parabéns! Seu próximo corte é gratuito!")
+            }
         }
     }
 }

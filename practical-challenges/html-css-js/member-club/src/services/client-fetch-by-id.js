@@ -9,6 +9,6 @@ export async function clientFetchByID(id) {
         return data
     } catch (error) {
         console.log(error)
-        alert('It was not possible to fetch data from client id ' + id)
+        alert('There is no client registered with ID ' + id)
     }
 }
