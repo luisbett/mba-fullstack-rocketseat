@@ -2,7 +2,7 @@ import { Outlet } from 'react-router'
 
 export function AuthLayout() {
   return (
-    <div className="bg-background grid min-h-screen grid-cols-2">
+    <div className="bg-background font-Poppins grid min-h-screen grid-cols-2 antialiased">
       <div className="col-span-1 flex flex-col">
         <div className="mt-10 mb-[50px] ml-10 flex items-center gap-5">
           <img
@@ -10,10 +10,8 @@ export function AuthLayout() {
             alt="Marketplace logo"
             className="h-[70px] w-[90px]"
           />
-          <div className="font-Poppins flex flex-col">
-            <h1 className="text-2xl leading-[1.2] font-bold text-gray-500">
-              Marketplace
-            </h1>
+          <div className="flex flex-col">
+            <h1 className="text-2xl font-bold text-gray-500">Marketplace</h1>
             <span className="text-gray-400">Painel de Vendedor</span>
           </div>
         </div>

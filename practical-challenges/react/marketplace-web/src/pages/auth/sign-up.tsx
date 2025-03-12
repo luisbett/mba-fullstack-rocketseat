@@ -9,6 +9,8 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useNavigate } from 'react-router'
 
+import { Button } from '@/components/button'
+
 import { Label } from '../../components/label'
 
 export function SignUp() {
@@ -17,16 +19,16 @@ export function SignUp() {
   return (
     <div className="flex flex-col gap-3 rounded-4xl bg-white px-20 py-18">
       <div className="flex flex-col gap-2">
-        <h1 className="font-DMSans text-2xl leading-[1.2] tracking-tight text-gray-500">
+        <h1 className="font-DMSans text-2xl tracking-tight text-gray-500">
           Crie sua conta
         </h1>
-        <p className="font-Poppins text-sm leading-[1.2] text-gray-300">
+        <p className="text-sm text-gray-300">
           Informe os seus dados pessoais e de acesso
         </p>
       </div>
       <form className="mt-12 flex flex-col gap-12">
         <div className="flex flex-col gap-5">
-          <h2 className="font-DMSans text-lg leading-[1.2] font-bold text-gray-500">
+          <h2 className="font-DMSans text-lg font-bold text-gray-500">
             Perfil
           </h2>
           <div className="bg-shape flex h-30 w-30 items-center justify-center rounded-xl">
@@ -45,7 +47,7 @@ export function SignUp() {
               <input
                 type="text"
                 placeholder="Seu nome completo"
-                className="font-Poppins w-full outline-0"
+                className="w-full outline-0"
               />
             </div>
           </div>
@@ -56,13 +58,13 @@ export function SignUp() {
               <input
                 type="phone"
                 placeholder="(00) 00000-0000"
-                className="font-Poppins w-full outline-0"
+                className="w-full outline-0"
               />
             </div>
           </div>
         </div>
         <div className="flex flex-col gap-5">
-          <h2 className="font-DMSans text-lg leading-[1.2] font-bold text-gray-500">
+          <h2 className="font-DMSans text-lg font-bold text-gray-500">
             Acesso
           </h2>
           <div className="flex flex-col">
@@ -72,7 +74,7 @@ export function SignUp() {
               <input
                 type="email"
                 placeholder="Seu e-mail de acesso"
-                className="font-Poppins w-full outline-0"
+                className="w-full outline-0"
               />
             </div>
           </div>
@@ -83,7 +85,7 @@ export function SignUp() {
               <input
                 type="password"
                 placeholder="Senha de acesso"
-                className="font-Poppins w-full outline-0"
+                className="w-full outline-0"
               />
             </div>
           </div>
@@ -94,31 +96,22 @@ export function SignUp() {
               <input
                 type="password"
                 placeholder="Confirme a senha"
-                className="font-Poppins w-full outline-0"
+                className="w-full outline-0"
               />
             </div>
           </div>
         </div>
-        <button
-          type="submit"
-          className="font-Poppins bg-orange-base flex cursor-pointer items-center justify-between rounded-[10px] px-5 py-4 leading-[1.2] font-medium text-white"
-        >
+        <Button type="submit">
           Cadastrar
           <HugeiconsIcon icon={ArrowRight02Icon} />
-        </button>
+        </Button>
       </form>
       <div className="mt-20 flex flex-col gap-5">
-        <p className="font-Poppins leading-[1.2] text-gray-300">
-          Já tem uma conta?
-        </p>
-        <button
-          type="button"
-          onClick={() => navigate('/sign-in')}
-          className="font-Poppins border-orange-base text-orange-base flex cursor-pointer items-center justify-between rounded-[10px] border px-5 py-4 leading-[1.2] font-medium"
-        >
+        <p className="text-gray-300">Já tem uma conta?</p>
+        <Button variant="secondary" onClick={() => navigate('/sign-in')}>
           Acessar
           <HugeiconsIcon icon={ArrowRight02Icon} />
-        </button>
+        </Button>
       </div>
     </div>
   )
