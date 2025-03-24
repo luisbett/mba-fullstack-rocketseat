@@ -1,3 +1,5 @@
+import { ProductCard } from '@/components/product-card'
+
 import { SearchBar } from './search-bar'
 
 export function Products() {
@@ -15,7 +17,50 @@ export function Products() {
         <div>
           <SearchBar />
         </div>
-        <div>Cards</div>
+        <div className="flex flex-wrap gap-4">
+          <ProductCard
+            status="advertised"
+            category="carro"
+            title="Carro"
+            description="Sofá revestido em couro legítimo, com estrutura em madeira maciça e pés em..."
+            price={1200.9}
+          />
+          <ProductCard
+            status="advertised"
+            category="carro"
+            title="Carro"
+            description="Sofá revestido em couro legítimo, com estrutura em madeira maciça e pés em..."
+            price={1200.9}
+          />
+          <ProductCard
+            status="sold"
+            category="carro"
+            title="Carro"
+            description="Sofá revestido em couro legítimo, com estrutura em madeira maciça e pés em..."
+            price={1200.9}
+          />
+          <ProductCard
+            status="inactive"
+            category="carro"
+            title="Carro"
+            description="Sofá revestido em couro legítimo, com estrutura em madeira maciça e pés em..."
+            price={1200.9}
+          />
+          <ProductCard
+            status="inactive"
+            category="carro"
+            title="Carro"
+            description="Sofá revestido em couro legítimo, com estrutura em madeira maciça e pés em..."
+            price={1200.9}
+          />
+          <ProductCard
+            status="inactive"
+            category="carro"
+            title="Carro"
+            description="Sofá revestido em couro legítimo, com estrutura em madeira maciça e pés em..."
+            price={1200.9}
+          />
+        </div>
       </div>
     </div>
   )
