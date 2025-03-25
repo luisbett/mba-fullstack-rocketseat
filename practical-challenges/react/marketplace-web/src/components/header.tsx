@@ -4,12 +4,14 @@ import {
   PlusSignIcon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 
 import { Button } from './button'
 import { NavLink } from './nav-link'
 
 export function Header() {
+  const navigate = useNavigate()
+
   return (
     <div className="border-shape flex items-center justify-between border-b-1 px-5 py-5">
       <Link to={'/'}>
@@ -30,7 +32,7 @@ export function Header() {
         </NavLink>
       </nav>
       <div className="flex items-center gap-4">
-        <Button size="small">
+        <Button size="small" onClick={() => navigate('/new-product')}>
           <HugeiconsIcon icon={PlusSignIcon} />
           Novo produto
         </Button>

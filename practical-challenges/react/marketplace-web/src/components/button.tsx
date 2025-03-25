@@ -3,7 +3,7 @@ import clsx from 'clsx'
 export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   type?: 'button' | 'submit'
   variant?: 'primary' | 'secondary'
-  size?: 'small' | 'big'
+  size?: 'small' | 'medium' | 'big'
   centralized?: boolean
 }
 
@@ -23,6 +23,7 @@ export function Button({
 
   const variantSizes = {
     small: 'h-10 text-sm',
+    medium: 'h-12',
     big: 'h-14',
   }
   return (

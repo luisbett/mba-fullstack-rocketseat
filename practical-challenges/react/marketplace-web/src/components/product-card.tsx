@@ -14,7 +14,7 @@ export function ProductCard({
   price,
 }: ProductCardProps) {
   return (
-    <div className="flex max-w-[330px] flex-col rounded-[20px] bg-white p-1">
+    <div className="hover:border-blue-base flex max-w-[330px] cursor-pointer flex-col rounded-[20px] border-2 border-transparent bg-white p-1 hover:border-2">
       <div className="relative">
         <img
           src="/assets/clio.jpg"
