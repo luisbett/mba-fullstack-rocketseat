@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string
+  label?: string
   type: string
   placeholder: string
   icon?: IconSvgElement
@@ -22,9 +22,11 @@ export function Input({
 
   return (
     <>
-      <label className="group-focus-within:text-orange-base text-xs font-medium text-gray-300">
-        {label.toLocaleUpperCase()}
-      </label>
+      {label && (
+        <label className="group-focus-within:text-orange-base text-xs font-medium text-gray-300">
+          {label.toLocaleUpperCase()}
+        </label>
+      )}
       <div className="flex gap-2 border-b-1 border-gray-200 py-3.5">
         {icon && (
           <HugeiconsIcon
