@@ -7,8 +7,7 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { useNavigate } from 'react-router'
 
 import { Button } from '@/components/button'
-
-import { Label } from '../../components/label'
+import { Input } from '@/components/input'
 
 export function SignIn() {
   const navigate = useNavigate()
@@ -24,27 +23,21 @@ export function SignIn() {
         </p>
       </div>
       <form className="mt-12 flex flex-col gap-5">
-        <div className="flex flex-col">
-          <Label>E-MAIL</Label>
-          <div className="flex gap-2 border-b-1 border-gray-200 py-3.5">
-            <HugeiconsIcon icon={Mail02Icon} className="text-gray-200" />
-            <input
-              type="email"
-              placeholder="Seu e-mail cadastrado"
-              className="w-full outline-0"
-            />
-          </div>
+        <div className="group flex flex-col">
+          <Input
+            label="E-mail"
+            type="email"
+            placeholder="Seu e-mail cadastrado"
+            icon={Mail02Icon}
+          />
         </div>
-        <div className="flex flex-col">
-          <Label>SENHA</Label>
-          <div className="flex gap-2 border-b-1 border-gray-200 py-3.5">
-            <HugeiconsIcon icon={AccessIcon} className="text-gray-200" />
-            <input
-              type="password"
-              placeholder="Sua senha de acesso"
-              className="w-full outline-0"
-            />
-          </div>
+        <div className="group flex flex-col">
+          <Input
+            label="Senha"
+            type="password"
+            placeholder="Sua senha de acesso"
+            icon={AccessIcon}
+          />
         </div>
         <Button type="submit" variant="primary">
           Acessar

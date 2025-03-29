@@ -1,3 +1,5 @@
+import { ProductTag } from './product-tag'
+
 export interface ProductCardProps {
   status: 'advertised' | 'sold' | 'inactive'
   category: string
@@ -22,21 +24,7 @@ export function ProductCard({
           className="w-full rounded-2xl object-cover"
         />
         <div className="absolute top-2 right-3 flex gap-1">
-          {status === 'advertised' && (
-            <span className="bg-blue-dark flex h-5 items-center justify-center rounded-full px-1 py-2 text-[10px] font-medium text-white">
-              ANUNCIADO
-            </span>
-          )}
-          {status === 'sold' && (
-            <span className="bg-success flex h-5 items-center justify-center rounded-full px-1 py-2 text-[10px] font-medium text-white">
-              VENDIDO
-            </span>
-          )}
-          {status === 'inactive' && (
-            <span className="flex h-5 items-center justify-center rounded-full bg-gray-300 px-1 py-2 text-[10px] font-medium text-white">
-              DESATIVADO
-            </span>
-          )}
+          <ProductTag status={status} />
           <span className="flex h-5 items-center justify-center rounded-full bg-gray-400 px-1 py-2 text-[10px] font-medium text-white">
             {category.toLocaleUpperCase()}
           </span>
