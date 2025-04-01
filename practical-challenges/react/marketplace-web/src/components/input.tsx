@@ -1,4 +1,8 @@
-import { ViewIcon, ViewOffIcon } from '@hugeicons/core-free-icons'
+import {
+  AlertCircleIcon,
+  ViewIcon,
+  ViewOffIcon,
+} from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { IconSvgElement } from 'node_modules/@hugeicons/react/dist/types/create-hugeicon-singleton'
 import { useState } from 'react'
@@ -9,6 +13,7 @@ export interface InputProps
   type: string
   placeholder: string
   icon?: IconSvgElement
+  error?: string
 }
 
 export function Input({
@@ -16,6 +21,7 @@ export function Input({
   type,
   placeholder,
   icon,
+  error,
   ...props
 }: InputProps) {
   const [showPassword, setShowPassword] = useState(false)
@@ -48,6 +54,12 @@ export function Input({
           />
         )}
       </div>
+      {error && (
+        <div className="text-danger flex items-center gap-1 py-2">
+          <HugeiconsIcon icon={AlertCircleIcon} className="h-4 w-4" />
+          <span className="text-xs">{error}</span>
+        </div>
+      )}
     </>
   )
 }
