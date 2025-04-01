@@ -15,6 +15,37 @@ import { TextArea } from '@/components/textarea'
 export function EditProduct() {
   const navigate = useNavigate()
 
+  const options = [
+    {
+      key: '',
+      value: 'Selecione',
+    },
+    {
+      key: 'toy',
+      value: 'Brinquedo',
+    },
+    {
+      key: 'furniture',
+      value: 'Móvel',
+    },
+    {
+      key: 'stationary',
+      value: 'Papelaria',
+    },
+    {
+      key: 'health',
+      value: 'Saúde & Beleza',
+    },
+    {
+      key: 'utensil',
+      value: 'Utensílio',
+    },
+    {
+      key: 'clothing',
+      value: 'Vestuário',
+    },
+  ]
+
   return (
     <div className="flex flex-col px-42 py-16">
       <div className="grid w-full gap-2">
@@ -79,7 +110,7 @@ export function EditProduct() {
               />
             </div>
             <div className="group">
-              <Select label="Categoria" />
+              <Select label="Categoria" id="category" options={options} />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <Button
