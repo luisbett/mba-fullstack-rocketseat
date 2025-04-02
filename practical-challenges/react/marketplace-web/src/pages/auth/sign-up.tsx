@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   AccessIcon,
   ArrowRight02Icon,
@@ -7,13 +8,37 @@ import {
   User02Icon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
+import { z } from 'zod'
 
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 
+const signUpSchema = z.object({
+  name: z.string().min(1, 'Nome obrigatório'),
+  phone: z.string().min(1, 'Telefone obrigatório'),
+  email: z.string().email('E-mail inválido'),
+  password: z.string().min(1, 'Senha obrigatória'),
+  confirmPassword: z.string().min(1, 'Confirme senha obrigatória'),
+})
+
+type SignUpInputs = z.infer<typeof signUpSchema>
+
 export function SignUp() {
   const navigate = useNavigate()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting, errors },
+  } = useForm<SignUpInputs>({
+    resolver: zodResolver(signUpSchema),
+  })
+
+  async function handleSignUp(data: SignUpInputs) {
+    console.log(data)
+  }
 
   return (
     <div className="flex flex-col gap-3 rounded-4xl bg-white px-20 py-18">
@@ -25,7 +50,10 @@ export function SignUp() {
           Informe os seus dados pessoais e de acesso
         </p>
       </div>
-      <form className="mt-12 flex flex-col gap-12">
+      <form
+        onSubmit={handleSubmit(handleSignUp)}
+        className="mt-12 flex flex-col gap-12"
+      >
         <div className="flex flex-col gap-5">
           <h2 className="font-DMSans text-lg font-bold text-gray-500">
             Perfil
@@ -42,6 +70,8 @@ export function SignUp() {
               type="text"
               placeholder="Seu nome completo"
               icon={User02Icon}
+              {...register('name')}
+              error={errors.name?.message}
             />
           </div>
           <div className="group flex flex-col">
@@ -50,6 +80,8 @@ export function SignUp() {
               type="phone"
               placeholder="(00) 00000-0000"
               icon={Call02Icon}
+              {...register('phone')}
+              error={errors.phone?.message}
             />
           </div>
         </div>
@@ -63,6 +95,8 @@ export function SignUp() {
               type="email"
               placeholder="Seu e-mail de acesso"
               icon={Mail02Icon}
+              {...register('email')}
+              error={errors.email?.message}
             />
           </div>
           <div className="group flex flex-col">
@@ -71,6 +105,8 @@ export function SignUp() {
               type="password"
               placeholder="Senha de acesso"
               icon={AccessIcon}
+              {...register('password')}
+              error={errors.password?.message}
             />
           </div>
           <div className="group flex flex-col">
@@ -79,10 +115,12 @@ export function SignUp() {
               type="password"
               placeholder="Confirme a senha"
               icon={AccessIcon}
+              {...register('confirmPassword')}
+              error={errors.confirmPassword?.message}
             />
           </div>
         </div>
-        <Button type="submit">
+        <Button type="submit" disabled={isSubmitting}>
           Cadastrar
           <HugeiconsIcon icon={ArrowRight02Icon} />
         </Button>

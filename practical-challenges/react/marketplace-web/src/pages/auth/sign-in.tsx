@@ -1,16 +1,38 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   AccessIcon,
   ArrowRight02Icon,
   Mail02Icon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
+import { z } from 'zod'
 
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 
+const signInSchema = z.object({
+  email: z.string().email('E-mail inválido'),
+  password: z.string().min(1, 'Senha obrigatória'),
+})
+
+type SignInInputs = z.infer<typeof signInSchema>
+
 export function SignIn() {
   const navigate = useNavigate()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<SignInInputs>({
+    resolver: zodResolver(signInSchema),
+  })
+
+  async function handleLogin(data: SignInInputs) {
+    console.log(data)
+  }
 
   return (
     <div className="flex h-full flex-col gap-3 rounded-4xl bg-white px-20 py-18">
@@ -22,13 +44,18 @@ export function SignIn() {
           Informe seu e-mail e senha para entrar
         </p>
       </div>
-      <form className="mt-12 flex flex-col gap-5">
+      <form
+        onSubmit={handleSubmit(handleLogin)}
+        className="mt-12 flex flex-col gap-5"
+      >
         <div className="group flex flex-col">
           <Input
             label="E-mail"
             type="email"
             placeholder="Seu e-mail cadastrado"
             icon={Mail02Icon}
+            error={errors.email?.message}
+            {...register('email')}
           />
         </div>
         <div className="group flex flex-col">
@@ -37,9 +64,11 @@ export function SignIn() {
             type="password"
             placeholder="Sua senha de acesso"
             icon={AccessIcon}
+            error={errors.password?.message}
+            {...register('password')}
           />
         </div>
-        <Button type="submit" variant="primary">
+        <Button type="submit" disabled={isSubmitting} variant="primary">
           Acessar
           <HugeiconsIcon icon={ArrowRight02Icon} />
         </Button>

@@ -5,6 +5,7 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary'
   size?: 'small' | 'medium' | 'big'
   centralized?: boolean
+  disabled?: boolean
 }
 
 export function Button({
@@ -12,12 +13,13 @@ export function Button({
   size = 'big',
   type = 'button',
   centralized = false,
+  disabled = false,
   ...props
 }: ButtonProps) {
   const baseStyles = `flex cursor-pointer items-center gap-2 rounded-[10px] px-4 py-3 font-medium transition-transform duration-100 hover:scale-95 ${centralized && 'justify-center'}`
 
   const variantStyles = {
-    primary: 'bg-orange-base text-white',
+    primary: 'bg-orange-base text-white disabled:bg-orange-dark',
     secondary: 'bg-transparent text-orange-base border-orange-base border',
   }
 
@@ -29,6 +31,7 @@ export function Button({
   return (
     <button
       type={type}
+      disabled={disabled}
       className={clsx(baseStyles, variantStyles[variant], variantSizes[size])}
       {...props}
     >
