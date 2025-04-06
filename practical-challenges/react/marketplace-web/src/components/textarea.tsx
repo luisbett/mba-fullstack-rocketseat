@@ -1,10 +1,19 @@
+import { AlertCircleIcon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
+
 export interface TextAreaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string
   placeholder: string
+  error?: string
 }
 
-export function TextArea({ label, placeholder, ...props }: TextAreaProps) {
+export function TextArea({
+  label,
+  placeholder,
+  error,
+  ...props
+}: TextAreaProps) {
   return (
     <>
       <label className="group-focus-within:text-orange-base text-xs font-medium text-gray-300">
@@ -17,6 +26,12 @@ export function TextArea({ label, placeholder, ...props }: TextAreaProps) {
           {...props}
         />
       </div>
+      {error && (
+        <div className="text-danger flex items-center gap-1 py-2">
+          <HugeiconsIcon icon={AlertCircleIcon} className="h-4 w-4" />
+          <span className="text-xs">{error}</span>
+        </div>
+      )}
     </>
   )
 }

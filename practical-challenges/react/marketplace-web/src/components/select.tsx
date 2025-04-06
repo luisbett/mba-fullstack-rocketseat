@@ -1,26 +1,32 @@
-import { Cancel01Icon } from '@hugeicons/core-free-icons'
+import { AlertCircleIcon, Cancel01Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { IconSvgElement } from 'node_modules/@hugeicons/react/dist/types/create-hugeicon-singleton'
-import React, { useState } from 'react'
+import React from 'react'
 
 export interface SelectProps
   extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string
   icon?: IconSvgElement
+  error?: string
   id: string
   options: {
     key: string
     value: string
   }[]
+  selectedOption: string
+  clearSelection: () => void
 }
 
-export function Select({ label, icon, id, options, ...props }: SelectProps) {
-  const [selectedOption, setSelectedOption] = useState('')
-
-  function handleOnChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    const selectedValue = e.target.value
-    setSelectedOption(selectedValue)
-  }
+export function Select({
+  label,
+  icon,
+  id,
+  options,
+  error,
+  selectedOption,
+  clearSelection,
+  ...props
+}: SelectProps) {
   return (
     <>
       {label && (
@@ -39,8 +45,6 @@ export function Select({ label, icon, id, options, ...props }: SelectProps) {
           name={id}
           id={id}
           className="w-full flex-1 text-gray-300 outline-0"
-          onChange={handleOnChange}
-          value={selectedOption}
           {...props}
         >
           {options.map((option) => (
@@ -54,11 +58,17 @@ export function Select({ label, icon, id, options, ...props }: SelectProps) {
             <HugeiconsIcon
               icon={Cancel01Icon}
               className="cursor-pointer text-gray-300"
-              onClick={() => setSelectedOption('')}
+              onClick={() => clearSelection()}
             />
           </div>
         )}
       </div>
+      {error && (
+        <div className="text-danger flex items-center gap-1 py-2">
+          <HugeiconsIcon icon={AlertCircleIcon} className="h-4 w-4" />
+          <span className="text-xs">{error}</span>
+        </div>
+      )}
     </>
   )
 }
