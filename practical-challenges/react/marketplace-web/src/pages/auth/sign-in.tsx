@@ -5,10 +5,13 @@ import {
   Mail02Icon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { signIn } from '@/api/sign-in'
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 
@@ -30,8 +33,18 @@ export function SignIn() {
     resolver: zodResolver(signInSchema),
   })
 
+  const { mutateAsync: authenticate } = useMutation({
+    mutationFn: signIn,
+  })
+
   async function handleLogin(data: SignInInputs) {
-    console.log(data)
+    try {
+      await authenticate({ email: data.email, password: data.password })
+
+      navigate('/')
+    } catch {
+      toast.error('Credenciais inválidas')
+    }
   }
 
   return (
