@@ -33,13 +33,13 @@ export function SignIn() {
     resolver: zodResolver(signInSchema),
   })
 
-  const { mutateAsync: authenticate } = useMutation({
+  const { mutateAsync: signInFn } = useMutation({
     mutationFn: signIn,
   })
 
   async function handleLogin(data: SignInInputs) {
     try {
-      await authenticate({ email: data.email, password: data.password })
+      await signInFn({ email: data.email, password: data.password })
 
       navigate('/')
     } catch {
