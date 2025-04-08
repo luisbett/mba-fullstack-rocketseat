@@ -5,8 +5,11 @@ import {
   PlusSignIcon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
+
+import { SignOut } from '@/api/sign-out'
 
 import { Button } from './button'
 import { NavLink } from './nav-link'
@@ -17,6 +20,13 @@ export function Header() {
   const [showPopOver, setShowPopOver] = useState(false)
 
   const imageSrc = 'https://github.com/luisbett.png'
+
+  const { mutateAsync: signOutFn } = useMutation({
+    mutationFn: SignOut,
+    onSuccess: () => {
+      navigate('/sign-in', { replace: true })
+    },
+  })
 
   return (
     <div className="border-shape relative flex items-center justify-between border-b-1 px-5 py-5">
@@ -58,7 +68,7 @@ export function Header() {
           <div className="bg-shape my-5 h-[1px]" />
           <div
             className="text-orange-base flex cursor-pointer items-center justify-between"
-            onClick={() => alert('Deslogado')}
+            onClick={() => signOutFn()}
           >
             <span className="text-sm font-medium">Sair</span>
             <HugeiconsIcon icon={Logout01Icon} />
