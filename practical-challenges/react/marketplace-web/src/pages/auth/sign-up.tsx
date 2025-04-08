@@ -8,10 +8,13 @@ import {
   User02Icon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { registerSeller } from '@/api/register-seller'
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 
@@ -36,8 +39,32 @@ export function SignUp() {
     resolver: zodResolver(signUpSchema),
   })
 
+  const { mutateAsync: registerSellerFn } = useMutation({
+    mutationFn: registerSeller,
+  })
+
   async function handleSignUp(data: SignUpInputs) {
-    console.log(data)
+    try {
+      await registerSellerFn({
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        avatarId: '',
+        password: data.password,
+        passwordConfirmation: data.confirmPassword,
+      })
+
+      toast.success('Usuário cadastrado com sucesso', {
+        action: {
+          label: 'Login',
+          onClick: () => {
+            navigate('/sign-in')
+          },
+        },
+      })
+    } catch {
+      toast.error('Erro ao cadastrar usuário')
+    }
   }
 
   return (
