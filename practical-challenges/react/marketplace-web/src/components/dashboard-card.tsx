@@ -19,7 +19,7 @@ export function DashboardCard({
       </div>
       <div className="flex flex-col gap-2">
         <h1 className="font-DMSans text-[28px] font-bold text-gray-500">
-          {amount}
+          {amount.toLocaleString('pt-BR')}
         </h1>
         <p className="text-xs text-gray-300">{description}</p>
       </div>

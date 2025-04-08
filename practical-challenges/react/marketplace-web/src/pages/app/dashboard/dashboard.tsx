@@ -5,12 +5,30 @@ import {
   UserMultiple03Icon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import { useQuery } from '@tanstack/react-query'
 
+import { getProductsSoldAmount } from '@/api/get-products-sold-amount'
+import { getViewsAmount } from '@/api/get-views-amount'
 import { DashboardCard } from '@/components/dashboard-card'
 
 import { VisitorsChart } from './visitors-chart'
 
 export function Dashboard() {
+  const { data: productsSoldAmount } = useQuery({
+    queryKey: ['metrics', 'products-sold-amount'],
+    queryFn: getProductsSoldAmount,
+  })
+
+  const { data: productsAvailableAmount } = useQuery({
+    queryKey: ['metrics', 'products-available-amount'],
+    queryFn: getProductsSoldAmount,
+  })
+
+  const { data: viewsAmount } = useQuery({
+    queryKey: ['metrics', 'views-amount'],
+    queryFn: getViewsAmount,
+  })
+
   return (
     <div className="flex flex-col px-42 py-16">
       <div className="flex w-full flex-col gap-2">
@@ -24,17 +42,17 @@ export function Dashboard() {
       <div className="mt-10 grid grid-cols-[240px_1fr] gap-6">
         <div className="flex flex-col gap-4">
           <DashboardCard
-            amount={24}
+            amount={productsSoldAmount?.amount || 0}
             description="Produtos vendidos"
             icon={SaleTag02Icon}
           />
           <DashboardCard
-            amount={56}
+            amount={productsAvailableAmount?.amount || 0}
             description="Produtos anunciados"
             icon={Store04Icon}
           />
           <DashboardCard
-            amount={1238}
+            amount={viewsAmount?.amount || 0}
             description="Pessoas visitantes"
             icon={UserMultiple03Icon}
           />
