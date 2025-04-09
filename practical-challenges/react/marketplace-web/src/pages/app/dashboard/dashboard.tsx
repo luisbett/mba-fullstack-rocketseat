@@ -9,6 +9,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { getProductsSoldAmount } from '@/api/get-products-sold-amount'
 import { getViewsAmount } from '@/api/get-views-amount'
+import { getViewsPerDayAmount } from '@/api/get-views-per-day-amount'
 import { DashboardCard } from '@/components/dashboard-card'
 
 import { VisitorsChart } from './visitors-chart'
@@ -27,6 +28,11 @@ export function Dashboard() {
   const { data: viewsAmount } = useQuery({
     queryKey: ['metrics', 'views-amount'],
     queryFn: getViewsAmount,
+  })
+
+  const { data: viewsAmountPerDay } = useQuery({
+    queryKey: ['metrics', 'views-amount-per-day'],
+    queryFn: getViewsPerDayAmount,
   })
 
   return (
@@ -68,11 +74,25 @@ export function Dashboard() {
                 className="text-blue-dark h-4 w-4"
               />
               <span className="text-[10px] font-medium text-gray-300">
-                26 DE JUNHO - 25 DE JULHO
+                {viewsAmountPerDay?.viewsPerDay
+                  ? new Date(viewsAmountPerDay?.viewsPerDay[0].date)
+                      .toLocaleDateString('pt-BR', {
+                        day: '2-digit',
+                        month: 'long',
+                      })
+                      .toLocaleUpperCase() +
+                    ' - ' +
+                    new Date(viewsAmountPerDay?.viewsPerDay[30].date)
+                      .toLocaleDateString('pt-BR', {
+                        day: '2-digit',
+                        month: 'long',
+                      })
+                      .toLocaleUpperCase()
+                  : ''}
               </span>
             </div>
           </div>
-          <VisitorsChart />
+          <VisitorsChart viewsPerDay={viewsAmountPerDay?.viewsPerDay || []} />
         </div>
       </div>
     </div>
