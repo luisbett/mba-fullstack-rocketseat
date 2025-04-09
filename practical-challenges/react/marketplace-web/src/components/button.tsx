@@ -16,7 +16,7 @@ export function Button({
   disabled = false,
   ...props
 }: ButtonProps) {
-  const baseStyles = `flex cursor-pointer items-center gap-2 rounded-[10px] px-4 py-3 font-medium transition-transform duration-100 hover:scale-95 ${centralized && 'justify-center'}`
+  const baseStyles = `flex cursor-pointer w-full items-center gap-2 rounded-[10px] px-4 py-3 font-medium transition-transform duration-100 hover:scale-95 ${centralized && 'justify-center'}`
 
   const variantStyles = {
     primary: 'bg-orange-base text-white disabled:bg-orange-dark',
