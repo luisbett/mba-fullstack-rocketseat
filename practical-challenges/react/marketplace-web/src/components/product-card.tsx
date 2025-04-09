@@ -1,27 +1,29 @@
 import { ProductTag } from './product-tag'
 
 export interface ProductCardProps {
-  status: 'advertised' | 'sold' | 'inactive'
+  status: 'available' | 'sold' | 'cancelled'
   category: string
   title: string
   description: string
   price: number
+  imgUrl: string
 }
 
 export function ProductCard({
-  status = 'advertised',
+  status = 'available',
   category,
   title,
   description,
   price,
+  imgUrl,
 }: ProductCardProps) {
   return (
     <div className="hover:border-blue-base flex max-w-[330px] cursor-pointer flex-col rounded-[20px] border-2 border-transparent bg-white p-1 hover:border-2">
       <div className="relative">
         <img
-          src="/assets/clio.jpg"
+          src={imgUrl}
           alt=""
-          className="w-full rounded-2xl object-cover"
+          className="h-36 w-full rounded-2xl object-cover"
         />
         <div className="absolute top-2 right-3 flex gap-1">
           <ProductTag status={status} />

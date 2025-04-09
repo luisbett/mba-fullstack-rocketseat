@@ -13,7 +13,7 @@ const options = [
     value: 'Status',
   },
   {
-    key: 'advertised',
+    key: 'available',
     value: 'Anunciado',
   },
   {
@@ -21,7 +21,7 @@ const options = [
     value: 'Vendido',
   },
   {
-    key: 'inactive',
+    key: 'cancelled',
     value: 'Desativado',
   },
 ]

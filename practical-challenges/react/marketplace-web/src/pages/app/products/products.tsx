@@ -1,8 +1,16 @@
+import { useQuery } from '@tanstack/react-query'
+
+import { getProducts } from '@/api/get-products'
 import { ProductCard } from '@/components/product-card'
 
 import { SearchBar } from './search-bar'
 
 export function Products() {
+  const { data: products } = useQuery({
+    queryKey: ['me', 'products'],
+    queryFn: getProducts,
+  })
+
   return (
     <div className="flex flex-col px-42 py-16">
       <div className="flex w-full flex-col gap-2">
@@ -18,48 +26,17 @@ export function Products() {
           <SearchBar />
         </div>
         <div className="flex flex-wrap gap-4">
-          <ProductCard
-            status="advertised"
-            category="carro"
-            title="Carro"
-            description="Sofá revestido em couro legítimo, com estrutura em madeira maciça e pés em..."
-            price={1200.9}
-          />
-          <ProductCard
-            status="advertised"
-            category="carro"
-            title="Carro"
-            description="Sofá revestido em couro legítimo, com estrutura em madeira maciça e pés em..."
-            price={1200.9}
-          />
-          <ProductCard
-            status="sold"
-            category="carro"
-            title="Carro"
-            description="Sofá revestido em couro legítimo, com estrutura em madeira maciça e pés em..."
-            price={1200.9}
-          />
-          <ProductCard
-            status="inactive"
-            category="carro"
-            title="Carro"
-            description="Sofá revestido em couro legítimo, com estrutura em madeira maciça e pés em..."
-            price={1200.9}
-          />
-          <ProductCard
-            status="inactive"
-            category="carro"
-            title="Carro"
-            description="Sofá revestido em couro legítimo, com estrutura em madeira maciça e pés em..."
-            price={1200.9}
-          />
-          <ProductCard
-            status="inactive"
-            category="carro"
-            title="Carro"
-            description="Sofá revestido em couro legítimo, com estrutura em madeira maciça e pés em..."
-            price={1200.9}
-          />
+          {products?.products.map((product) => (
+            <ProductCard
+              key={product.id}
+              status={product.status}
+              category={product.category.slug}
+              title={product.title}
+              description={product.description}
+              price={product.priceInCents / 100}
+              imgUrl={product.attachments[0].url}
+            />
+          ))}
         </div>
       </div>
     </div>

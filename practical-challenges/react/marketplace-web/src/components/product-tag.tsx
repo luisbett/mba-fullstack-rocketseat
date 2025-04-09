@@ -1,11 +1,11 @@
 export interface ProductTagProps {
-  status: 'advertised' | 'sold' | 'inactive'
+  status: 'available' | 'sold' | 'cancelled'
 }
 
 export function ProductTag({ status }: ProductTagProps) {
   return (
     <>
-      {status === 'advertised' && (
+      {status === 'available' && (
         <span className="bg-blue-dark flex h-5 items-center justify-center rounded-full px-1 py-2 text-[10px] font-medium text-white">
           ANUNCIADO
         </span>
@@ -15,7 +15,7 @@ export function ProductTag({ status }: ProductTagProps) {
           VENDIDO
         </span>
       )}
-      {status === 'inactive' && (
+      {status === 'cancelled' && (
         <span className="flex h-5 items-center justify-center rounded-full bg-gray-300 px-1 py-2 text-[10px] font-medium text-white">
           DESATIVADO
         </span>

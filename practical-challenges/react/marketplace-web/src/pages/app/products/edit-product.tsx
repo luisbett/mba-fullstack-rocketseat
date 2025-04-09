@@ -120,7 +120,7 @@ export function EditProduct() {
             <h1 className="font-DMSans text-lg font-bold text-gray-300">
               Dados do produto
             </h1>
-            <ProductTag status="advertised" />
+            <ProductTag status="available" />
           </div>
           <form
             onSubmit={handleSubmit(handleEditProduct)}
