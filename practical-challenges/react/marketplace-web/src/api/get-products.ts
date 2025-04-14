@@ -1,5 +1,10 @@
 import { api } from '@/lib/axios'
 
+export interface GetProductsProps {
+  search: string
+  status: string
+}
+
 export interface getProductsResponse {
   products: [
     {
@@ -33,8 +38,23 @@ export interface getProductsResponse {
   ]
 }
 
-export async function getProducts() {
-  const response = await api.get<getProductsResponse>('/products/me')
+export async function getProducts({
+  search = '',
+  status = '',
+}: GetProductsProps) {
+  const params: Record<string, string> = {}
+
+  if (search.trim() !== '') {
+    params.search = search
+  }
+
+  if (status.trim() !== '') {
+    params.status = status
+  }
+
+  const response = await api.get<getProductsResponse>('/products/me', {
+    params,
+  })
 
   return response.data
 }

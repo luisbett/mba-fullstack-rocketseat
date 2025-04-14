@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SaleTag02Icon, Search01Icon } from '@hugeicons/core-free-icons'
 import { useForm } from 'react-hook-form'
+import { SetURLSearchParams } from 'react-router'
 import { z } from 'zod'
 
 import { Button } from '@/components/button'
@@ -26,14 +27,28 @@ const options = [
   },
 ]
 
+export interface SearchBarProps {
+  search: string
+  setSearch: React.Dispatch<React.SetStateAction<string>>
+  status: string
+  setStatus: React.Dispatch<React.SetStateAction<string>>
+  setSearchParams: SetURLSearchParams
+}
+
 const searchBarSchema = z.object({
   query: z.string(),
-  category: z.string(),
+  status: z.string(),
 })
 
 type SearchBarInputs = z.infer<typeof searchBarSchema>
 
-export function SearchBar() {
+export function SearchBar({
+  search,
+  setSearch,
+  status,
+  setStatus,
+  setSearchParams,
+}: SearchBarProps) {
   const {
     register,
     handleSubmit,
@@ -42,16 +57,33 @@ export function SearchBar() {
     setValue,
   } = useForm<SearchBarInputs>({
     resolver: zodResolver(searchBarSchema),
+    defaultValues: {
+      query: search,
+      status,
+    },
   })
 
-  const selectedOption = watch('category')
+  const selectedOption = watch('status')
 
   const clearSelection = () => {
-    setValue('category', '')
+    setValue('status', '')
   }
 
   function handleSearch(data: SearchBarInputs) {
-    console.log(data)
+    setSearch(data.query)
+    setStatus(data.status)
+
+    const params: Record<string, string> = {}
+
+    if (data.query.trim() !== '') {
+      params.search = data.query
+    }
+
+    if (data.status.trim() !== '') {
+      params.status = data.status
+    }
+
+    setSearchParams(params)
   }
 
   return (
@@ -73,7 +105,7 @@ export function SearchBar() {
             icon={SaleTag02Icon}
             id="status"
             options={options}
-            {...register('category')}
+            {...register('status')}
             selectedOption={selectedOption}
             clearSelection={clearSelection}
           />
