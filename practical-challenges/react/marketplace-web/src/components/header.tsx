@@ -5,10 +5,11 @@ import {
   PlusSignIcon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 
+import { getSellerProfile } from '@/api/get-seller-profile'
 import { SignOut } from '@/api/sign-out'
 
 import { Button } from './button'
@@ -19,7 +20,10 @@ export function Header() {
 
   const [showPopOver, setShowPopOver] = useState(false)
 
-  const imageSrc = 'https://github.com/luisbett.png'
+  const { data: sellerProfile } = useQuery({
+    queryKey: ['me'],
+    queryFn: getSellerProfile,
+  })
 
   const { mutateAsync: signOutFn } = useMutation({
     mutationFn: SignOut,
@@ -52,18 +56,35 @@ export function Header() {
           <HugeiconsIcon icon={PlusSignIcon} />
           Novo produto
         </Button>
-        <img
-          src={imageSrc}
-          alt=""
-          className="h-12 w-12 cursor-pointer rounded-lg"
-          onClick={() => setShowPopOver(!showPopOver)}
-        />
+        {sellerProfile?.seller.avatar ? (
+          <img
+            src={sellerProfile?.seller.avatar?.url}
+            alt=""
+            className="h-12 w-12 cursor-pointer rounded-lg object-cover"
+            onClick={() => setShowPopOver(!showPopOver)}
+          />
+        ) : (
+          <div
+            onClick={() => setShowPopOver(!showPopOver)}
+            className="bg-background h-12 w-12 cursor-pointer rounded-lg"
+          ></div>
+        )}
       </div>
       {showPopOver && (
         <div className="absolute top-20 right-5 z-10 w-42 rounded-xl bg-white p-4">
           <div className="flex items-center gap-3">
-            <img src={imageSrc} alt="" className="h-8 w-8 rounded-xl" />
-            <span className="text-sm text-gray-300">Luis Bett</span>
+            {sellerProfile?.seller.avatar ? (
+              <img
+                src={sellerProfile?.seller.avatar?.url}
+                alt=""
+                className="h-8 w-8 rounded-xl object-cover"
+              />
+            ) : (
+              <div className="bg-background h-8 w-8 rounded-xl"></div>
+            )}
+            <span className="text-sm text-gray-300">
+              {sellerProfile?.seller.name}
+            </span>
           </div>
           <div className="bg-shape my-5 h-[1px]" />
           <div
