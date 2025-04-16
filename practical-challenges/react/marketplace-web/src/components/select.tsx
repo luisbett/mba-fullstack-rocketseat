@@ -10,8 +10,9 @@ export interface SelectProps
   error?: string
   id: string
   options: {
-    key: string
-    value: string
+    id: string
+    title: string
+    slug: string
   }[]
   selectedOption: string
   clearSelection: () => void
@@ -48,8 +49,8 @@ export function Select({
           {...props}
         >
           {options.map((option) => (
-            <option key={option.key} value={option.key}>
-              {option.value}
+            <option key={option.id} value={option.id}>
+              {option.title}
             </option>
           ))}
         </select>

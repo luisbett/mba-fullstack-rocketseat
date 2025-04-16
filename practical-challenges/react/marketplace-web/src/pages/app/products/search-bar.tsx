@@ -10,20 +10,24 @@ import { Select } from '@/components/select'
 
 const options = [
   {
-    key: '',
-    value: 'Status',
+    id: '',
+    title: 'Status',
+    slug: '',
   },
   {
-    key: 'available',
-    value: 'Anunciado',
+    id: 'available',
+    title: 'Anunciado',
+    slug: 'anunciado',
   },
   {
-    key: 'sold',
-    value: 'Vendido',
+    id: 'sold',
+    title: 'Vendido',
+    slug: 'vendido',
   },
   {
-    key: 'cancelled',
-    value: 'Desativado',
+    id: 'cancelled',
+    title: 'Desativado',
+    slug: 'desativado',
   },
 ]
 
