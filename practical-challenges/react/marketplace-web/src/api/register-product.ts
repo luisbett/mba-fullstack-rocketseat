@@ -8,6 +8,37 @@ export interface RegisterProductBody {
   attachmentsIds: string[]
 }
 
+interface RegisterProductResponse {
+  product: {
+    id: string
+    title: string
+    description: string
+    priceInCents: number
+    status: string
+    owner: {
+      id: string
+      name: string
+      phone: string
+      email: string
+      avatar: {
+        id: string
+        url: string
+      }
+    }
+    category: {
+      id: string
+      title: string
+      slug: string
+    }
+    attachments: [
+      {
+        id: string
+        url: string
+      },
+    ]
+  }
+}
+
 export async function registerProduct({
   title,
   categoryId,
@@ -15,11 +46,13 @@ export async function registerProduct({
   priceInCents,
   attachmentsIds,
 }: RegisterProductBody) {
-  await api.post('/products', {
+  const response = await api.post<RegisterProductResponse>('/products', {
     title,
     categoryId,
     description,
     priceInCents,
     attachmentsIds,
   })
+
+  return response.data
 }

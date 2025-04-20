@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router'
+
 import { ProductTag } from './product-tag'
 
 export interface ProductCardProps {
+  id: string
   status: 'available' | 'sold' | 'cancelled'
   category: string
   title: string
@@ -10,6 +13,7 @@ export interface ProductCardProps {
 }
 
 export function ProductCard({
+  id,
   status = 'available',
   category,
   title,
@@ -17,8 +21,13 @@ export function ProductCard({
   price,
   imgUrl,
 }: ProductCardProps) {
+  const navigate = useNavigate()
+
   return (
-    <div className="hover:border-blue-base flex max-w-[330px] cursor-pointer flex-col rounded-[20px] border-2 border-transparent bg-white p-1 hover:border-2">
+    <div
+      onClick={() => navigate(`/edit-product/${id}`)}
+      className="hover:border-blue-base flex w-[330px] cursor-pointer flex-col rounded-[20px] border-2 border-transparent bg-white p-1 hover:border-2"
+    >
       <div className="relative">
         <img
           src={imgUrl}

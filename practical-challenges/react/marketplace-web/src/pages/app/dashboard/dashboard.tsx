@@ -7,6 +7,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useQuery } from '@tanstack/react-query'
 
+import { getProductsAvailableAmount } from '@/api/get-products-available-amount'
 import { getProductsSoldAmount } from '@/api/get-products-sold-amount'
 import { getViewsAmount } from '@/api/get-views-amount'
 import { getViewsPerDayAmount } from '@/api/get-views-per-day-amount'
@@ -22,7 +23,7 @@ export function Dashboard() {
 
   const { data: productsAvailableAmount } = useQuery({
     queryKey: ['metrics', 'products-available-amount'],
-    queryFn: getProductsSoldAmount,
+    queryFn: getProductsAvailableAmount,
   })
 
   const { data: viewsAmount } = useQuery({

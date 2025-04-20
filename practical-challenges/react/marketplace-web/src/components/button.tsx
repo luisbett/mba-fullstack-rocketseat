@@ -19,8 +19,9 @@ export function Button({
   const baseStyles = `flex cursor-pointer w-full items-center gap-2 rounded-[10px] px-4 py-3 font-medium transition-transform duration-100 hover:scale-95 ${centralized && 'justify-center'}`
 
   const variantStyles = {
-    primary: 'bg-orange-base text-white disabled:bg-orange-dark',
-    secondary: 'bg-transparent text-orange-base border-orange-base border',
+    primary: 'bg-orange-base text-white disabled:bg-orange-dark/50',
+    secondary:
+      'bg-transparent text-orange-base border-orange-base border disabled:text-orange-base/50 disabled:border-orange-base/50',
   }
 
   const variantSizes = {

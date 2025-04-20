@@ -41,6 +41,7 @@ export function Products() {
           {products?.products.map((product) => (
             <ProductCard
               key={product.id}
+              id={product.id}
               status={product.status}
               category={product.category.slug}
               title={product.title}

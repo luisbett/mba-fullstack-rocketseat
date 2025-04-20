@@ -1,32 +1,20 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AlertCircleIcon, ImageUpload01Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { getCategories } from '@/api/get-categories'
 import { registerProduct } from '@/api/register-product'
 import { UploadImage } from '@/api/upload-image'
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 import { Select } from '@/components/select'
 import { TextArea } from '@/components/textarea'
-
-const categories = [
-  {
-    id: '',
-    title: 'Selecione',
-    slug: '',
-  },
-  {
-    id: '7a60de19-344e-4ba0-967c-554ce9e44b70',
-    title: 'Brinquedos',
-    slug: 'brinquedos',
-  },
-]
 
 const ACCEPTED_IMAGE_TYPES = ['image/png']
 
@@ -64,6 +52,11 @@ export function NewProduct() {
     resolver: zodResolver(newProductSchema),
   })
 
+  const { data: categoriesData } = useQuery({
+    queryKey: ['categories'],
+    queryFn: getCategories,
+  })
+
   const selectedOption = watch('category')
 
   const clearSelection = () => {
@@ -93,7 +86,7 @@ export function NewProduct() {
         fileId = uploadedFiles.attachments[0].id
       }
 
-      await registerProductFn({
+      const product = await registerProductFn({
         title: data.title,
         categoryId: data.category,
         description: data.description,
@@ -103,7 +96,14 @@ export function NewProduct() {
 
       reset()
 
-      toast.success('Produto cadastrado com sucesso')
+      toast.success('Produto cadastrado com sucesso', {
+        action: {
+          label: 'Ver produto',
+          onClick: () => {
+            navigate(`/edit-product/${product.product.id}`)
+          },
+        },
+      })
     } catch {
       toast.error('Erro ao cadastrar produto')
     }
@@ -209,7 +209,7 @@ export function NewProduct() {
               <Select
                 label="Categoria"
                 id="category"
-                options={categories}
+                options={categoriesData?.categories || []}
                 {...register('category')}
                 error={errors.category?.message}
                 selectedOption={selectedOption}

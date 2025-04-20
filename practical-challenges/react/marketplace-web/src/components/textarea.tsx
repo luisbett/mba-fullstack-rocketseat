@@ -22,7 +22,7 @@ export function TextArea({
       <div className="border-b-1 border-gray-200 py-3.5">
         <textarea
           placeholder={placeholder}
-          className="w-full outline-0"
+          className="w-full resize-none outline-0"
           {...props}
         />
       </div>
