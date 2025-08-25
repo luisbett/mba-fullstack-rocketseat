@@ -14,6 +14,8 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
+    "@hugeicons/core-free-icons": "^1.0.16",
+    "@hugeicons/react-native": "^1.0.7",
     "@react-navigation/native": "^7.1.6",
     "expo": "~53.0.22",
     "expo-font": "~13.3.2",
@@ -29,6 +31,7 @@
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
+    "react-native-svg": "^15.12.1",
     "react-native-web": "~0.20.0"
   },
   "devDependencies": {
