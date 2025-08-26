@@ -1,13 +1,13 @@
 import { router } from "expo-router";
-import { TouchableOpacity } from "react-native";
 import { useFonts, DMSans_700Bold } from '@expo-google-fonts/dm-sans'
 import { Poppins_400Regular } from '@expo-google-fonts/poppins'
-import { Center, GluestackUIProvider, Text, VStack } from '@gluestack-ui/themed'
+import { Center, GluestackUIProvider, Heading, Text, VStack } from '@gluestack-ui/themed'
 import { config } from '../../config/gluestack-ui.config'
 import { Loading } from "@/components/loading";
 import Logo from '@/assets/logo.svg'
 import { Input } from "@/components/input";
 import { Button } from "@/components/button";
+import { AccessIcon, Mail02Icon } from "@hugeicons/core-free-icons";
 
 export default function Index() {
     const [ fontsLoaded ] = useFonts({ DMSans_700Bold, Poppins_400Regular })
@@ -23,20 +23,35 @@ export default function Index() {
     return (
         <GluestackUIProvider config={config}>
             { fontsLoaded ? (
-                <VStack flex={1}>
+                <VStack flex={1} px={'$10'}>
                     <Center mt='$16'>
                         <Logo width={'64px'} height={'48px'}/>
-                        <Text>Acesse sua conta</Text>
                     </Center>
 
-                    <Input placeholder="mail@examplo.br" keyboardType="email-address" autoCapitalize="none" />
-                    <Input placeholder="Sua senha" secureTextEntry />
-                    
-                    <Button title="Acessar" onPress={handleSignIn} />
+                    <Center mt='$12' mb='$16'>
+                        <Heading fontSize='$2xl' color="$gray500">Acesse sua conta</Heading>
+                        <Text>Informe seu e-mail e senha para entrar</Text>
+                    </Center>
 
-                    <TouchableOpacity onPress={handleSignUp}>
-                        <Text>Cadastrar</Text>
-                    </TouchableOpacity>
+                    <Input 
+                        title='E-mail'
+                        icon={Mail02Icon}
+                        placeholder="mail@examplo.br"
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                    />
+
+                    <Input
+                        title='Senha'
+                        icon={AccessIcon}
+                        isPassword
+                        placeholder="Sua senha" 
+                    />
+                    
+                    <Button title="Acessar" mt='$10' withArrow onPress={handleSignIn} />
+
+                    <Text mt='$41' fontWeight={'$'}>Ainda não tem uma conta?</Text>
+                    <Button mt='$5' title="Cadastrar" variant="outline" withArrow onPress={handleSignUp} />
                 </VStack>
             ) : (
                 <Loading />
