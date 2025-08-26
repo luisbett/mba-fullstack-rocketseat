@@ -1,29 +1,85 @@
 import { router } from "expo-router";
-import { View, StyleSheet, Text, TouchableOpacity, Alert } from "react-native";
 
-export default function Index() {
-    function handleSignUp() {
-        Alert.alert('Cadastrado!')
-    }
+import { Box, Center, Heading, Text, VStack, ScrollView } from "@gluestack-ui/themed";
 
-    function handleSignIn() {
-        router.back()
-    }
+import { HugeiconsIcon } from "@hugeicons/react-native";
+import { AccessIcon, CallIcon, ImageUpload01Icon, Mail02Icon, UserIcon } from "@hugeicons/core-free-icons";
+
+import { Input } from "@/components/input";
+import { Button } from "@/components/button";
+
+import Logo from '@/assets/logo.svg'
+
+export default function SignUp() {
+    function handleSignUp() {}
 
     return (
-        <View style={styles.container}>
-            <Text>Crie sua conta</Text>
-            <TouchableOpacity onPress={handleSignUp}>
-                <Text>Cadastrar</Text>
-            </TouchableOpacity>
+        <ScrollView showsVerticalScrollIndicator={false}>
+            <VStack flex={1} px={'$10'} mb='$12'>
+                <Center mt='$16'>
+                    <Logo width={'64px'} height={'48px'}/>
+                </Center>
 
-            <TouchableOpacity onPress={handleSignIn}>
-                <Text>Acessar</Text>
-            </TouchableOpacity>
-        </View>
+                <Center mt='$12' mb='$8.5'>
+                    <Heading fontSize='$2xl' color="$gray500">Crie sua conta</Heading>
+                    <Text textAlign="center">Informe os seus dados pessoais e de acesso</Text>
+                </Center>
+
+                <Center>
+                    <Box 
+                        bgColor="$shape"
+                        width='$30'
+                        height='$30'
+                        rounded='$xl'
+                        justifyContent="center"
+                        alignItems="center"
+                        mb='$5'
+                    >
+                        <HugeiconsIcon icon={ImageUpload01Icon} color='#F24D0D' width='32px' height='32px' />
+                    </Box>
+                </Center>
+
+                <Input 
+                    title='Nome'
+                    icon={UserIcon}
+                    placeholder="Seu nome completo"
+                />
+
+                <Input 
+                    title='Telefone'
+                    icon={CallIcon}
+                    placeholder="(00) 00000-0000"
+                />
+
+                <Heading fontSize='$md' mt='$5' mb='$5'>Acesso</Heading>
+
+                <Input 
+                    title='E-mail'
+                    icon={Mail02Icon}
+                    placeholder="mail@examplo.br"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                />
+
+                <Input
+                    title='Senha'
+                    icon={AccessIcon}
+                    isPassword
+                    placeholder="Sua senha" 
+                />
+
+                <Input
+                    title='Confirmar senha'
+                    icon={AccessIcon}
+                    isPassword
+                    placeholder="Confirme a senha" 
+                />
+                
+                <Button title="Cadastrar" mt='$10' withArrow onPress={handleSignUp} />
+
+                <Text mt='$15'>Já tem uma conta?</Text>
+                <Button mt='$5' title="Acessar" variant="outline" withArrow onPress={() => router.back()} />
+            </VStack>
+        </ScrollView>
     )
 }
-
-const styles = StyleSheet.create({
-    container: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: 16 }
-})

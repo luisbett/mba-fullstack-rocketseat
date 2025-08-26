@@ -1,13 +1,18 @@
 import { router } from "expo-router";
+
 import { useFonts, DMSans_700Bold } from '@expo-google-fonts/dm-sans'
 import { Poppins_400Regular } from '@expo-google-fonts/poppins'
+
 import { Center, GluestackUIProvider, Heading, Text, VStack } from '@gluestack-ui/themed'
 import { config } from '../../config/gluestack-ui.config'
+
+import { AccessIcon, Mail02Icon } from "@hugeicons/core-free-icons";
+
 import { Loading } from "@/components/loading";
-import Logo from '@/assets/logo.svg'
 import { Input } from "@/components/input";
 import { Button } from "@/components/button";
-import { AccessIcon, Mail02Icon } from "@hugeicons/core-free-icons";
+
+import Logo from '@/assets/logo.svg'
 
 export default function Index() {
     const [ fontsLoaded ] = useFonts({ DMSans_700Bold, Poppins_400Regular })
@@ -50,7 +55,7 @@ export default function Index() {
                     
                     <Button title="Acessar" mt='$10' withArrow onPress={handleSignIn} />
 
-                    <Text mt='$41' fontWeight={'$'}>Ainda não tem uma conta?</Text>
+                    <Text mt='$41'>Ainda não tem uma conta?</Text>
                     <Button mt='$5' title="Cadastrar" variant="outline" withArrow onPress={handleSignUp} />
                 </VStack>
             ) : (
