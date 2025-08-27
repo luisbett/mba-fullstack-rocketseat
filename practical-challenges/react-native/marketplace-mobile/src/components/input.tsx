@@ -4,7 +4,7 @@ import { HugeiconsIcon, IconSvgElement } from '@hugeicons/react-native'
 import { ComponentProps, useState } from 'react'
 
 type Props = ComponentProps<typeof InputField> & {
-    title: string
+    title?: string
     icon?: IconSvgElement
     isPassword?: boolean
 }
@@ -14,7 +14,7 @@ export function Input({ title, icon, isPassword = false, ...rest }: Props) {
 
     return (
         <Box mb='$5'>
-            <Text fontSize='$xs' color='$gray300'>{title.toUpperCase()}</Text>
+            { title && <Text fontSize='$xs' color='$gray300'>{title.toUpperCase()}</Text> }
             <GluestackInput
                 alignItems='center'
                 borderWidth={0}
