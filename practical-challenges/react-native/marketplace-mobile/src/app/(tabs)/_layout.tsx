@@ -35,7 +35,10 @@ export default function TabsLayout() {
                                 icon={UserIcon}
                                 color={color}
                                 size={size}
-                            /> 
+                            />,
+                    sceneStyle: {
+                        backgroundColor: '#FBF4F4'
+                    }
                 }}
             />
             <Tabs.Screen name="product" options={{ href: null }}/>
