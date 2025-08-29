@@ -7,19 +7,22 @@ type Props = ComponentProps<typeof InputField> & {
     title?: string
     icon?: IconSvgElement
     isPassword?: boolean
+    inputMarginBottom?: ComponentProps<typeof GluestackInput>['pb']
 }
 
-export function Input({ title, icon, isPassword = false, ...rest }: Props) {
+export function Input({ title, icon, isPassword = false, inputMarginBottom = '$5', ...rest }: Props) {
     const [showPassword, setShowPassword] = useState(false)
 
     return (
-        <Box mb='$5'>
+        <>
             { title && <Text fontSize='$xs' color='$gray300'>{title.toUpperCase()}</Text> }
             <GluestackInput
                 alignItems='center'
                 borderWidth={0}
                 borderBottomWidth={1}
                 borderBottomColor='$gray100'
+                mb={inputMarginBottom}
+                flex={1}
             >
                 { icon && <HugeiconsIcon icon={icon} color='#949494' /> }
                 <InputField 
@@ -34,6 +37,6 @@ export function Input({ title, icon, isPassword = false, ...rest }: Props) {
                         onPress={() => setShowPassword((state) => !state )} 
                     /> }
             </GluestackInput>
-        </Box>
+        </>
     )
 }

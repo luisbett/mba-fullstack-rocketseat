@@ -28,7 +28,7 @@ export default function Index() {
     return (
         <GluestackUIProvider config={config}>
             { fontsLoaded ? (
-                <VStack flex={1} px={'$10'}>
+                <VStack px={'$10'}>
                     <Center mt='$16'>
                         <Logo width={'64px'} height={'48px'}/>
                     </Center>
