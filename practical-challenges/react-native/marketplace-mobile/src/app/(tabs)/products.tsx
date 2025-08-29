@@ -71,6 +71,7 @@ export default function Products() {
                         icon={Search01Icon}
                         placeholder="Pesquisar..."
                         inputMarginBottom='$6'
+                        inputFlex={1}
                     />
                     <Button
                         icon={FilterVerticalIcon}

@@ -8,9 +8,10 @@ type Props = ComponentProps<typeof InputField> & {
     icon?: IconSvgElement
     isPassword?: boolean
     inputMarginBottom?: ComponentProps<typeof GluestackInput>['pb']
+    inputFlex?: number
 }
 
-export function Input({ title, icon, isPassword = false, inputMarginBottom = '$5', ...rest }: Props) {
+export function Input({ title, icon, isPassword = false, inputMarginBottom = '$5', inputFlex = 0, ...rest }: Props) {
     const [showPassword, setShowPassword] = useState(false)
 
     return (
@@ -22,7 +23,7 @@ export function Input({ title, icon, isPassword = false, inputMarginBottom = '$5
                 borderBottomWidth={1}
                 borderBottomColor='$gray100'
                 mb={inputMarginBottom}
-                flex={1}
+                flex={inputFlex}
             >
                 { icon && <HugeiconsIcon icon={icon} color='#949494' /> }
                 <InputField 
