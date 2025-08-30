@@ -1,5 +1,7 @@
 import { Card as GluestackCard, Heading, HStack, Image, Text, VStack } from '@gluestack-ui/themed'
+import { router } from 'expo-router'
 import { ComponentProps } from 'react'
+import { Pressable } from 'react-native'
 
 type Props = ComponentProps<typeof GluestackCard> & {
     image: string
@@ -28,15 +30,17 @@ export function Card({ image, title, price, ...rest }: Props) {
                     source={{
                         uri: image,
                     }}
-                   alt="image"
+                alt="image"
                 />
-                <VStack px='$1'>
-                    <Text fontSize='$xs'>{title}</Text>
-                    <HStack alignItems="baseline" gap='$1'>
-                        <Text fontSize='$2xs' color='$gray500'>R$</Text>
-                        <Heading fontSize='$sm'>{price.toLocaleString('pt-BR')}</Heading>
-                    </HStack>
-                </VStack>
+                <Pressable onPress={() => router.navigate(`/(tabs)/product/33`)}>
+                    <VStack px='$1'>
+                        <Text fontSize='$xs'>{title}</Text>
+                        <HStack alignItems="baseline" gap='$1'>
+                            <Text fontSize='$2xs' color='$gray500'>R$</Text>
+                            <Heading fontSize='$sm'>{price.toLocaleString('pt-BR')}</Heading>
+                        </HStack>
+                    </VStack>
+                </Pressable>
             </VStack>
         </GluestackCard>
     )

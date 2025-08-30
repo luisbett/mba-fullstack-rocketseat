@@ -1,7 +1,6 @@
-import { Box, Center, Heading, HStack, ScrollView, Text, VStack } from "@gluestack-ui/themed";
+import { Center, Heading, Image, VStack } from "@gluestack-ui/themed";
 
-import { HugeiconsIcon } from "@hugeicons/react-native";
-import { AccessIcon, CallIcon, ImageUpload01Icon, Logout01Icon, Mail02Icon, UserIcon } from "@hugeicons/core-free-icons";
+import { AccessIcon, CallIcon, Logout01Icon, Mail02Icon, UserIcon } from "@hugeicons/core-free-icons";
 
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
@@ -14,16 +13,15 @@ export default function Profile() {
     return (
         <VStack flex={1} px={'$10'} mb='$5' position="relative">
             <Center mt='$16' mb='$5'>
-                <Box 
-                    bgColor="$shape"
-                    width='$30'
-                    height='$30'
+                <Image
+                    w='$30'
+                    h='$30'
                     rounded='$xl'
-                    justifyContent="center"
-                    alignItems="center"
-                >
-                    <HugeiconsIcon icon={ImageUpload01Icon} color='#F24D0D' width='32px' height='32px' />
-                </Box>
+                    source={{
+                        uri: 'https://github.com/luisbett.png',
+                    }}
+                    alt="Profile picture"
+                />
             </Center>
 
             <Button
@@ -31,6 +29,7 @@ export default function Profile() {
                 iconColor='#DC3545'
                 variant="outline"
                 position="absolute"
+                w='$10'
                 top='$16'
                 right='$6'
                 onPress={handleLogout}
@@ -72,7 +71,7 @@ export default function Profile() {
                 placeholder="Sua nova senha"
             />
             
-            <Button title="Atualizar cadastro" mt='$6' onPress={handleProfileUpdate} />
+            <Button w='$full' title="Atualizar cadastro" mt='$6' onPress={handleProfileUpdate} />
         </VStack>
     )
 }

@@ -1,4 +1,4 @@
-import { Box, HStack, ScrollView, Text, VStack } from "@gluestack-ui/themed";
+import { Box, HStack, Image, ScrollView, Text, VStack } from "@gluestack-ui/themed";
 
 import { FilterVerticalIcon, Search01Icon } from "@hugeicons/core-free-icons";
 
@@ -57,10 +57,18 @@ export default function Products() {
         <>
             <VStack px={'$6'} borderBottomLeftRadius={'$2lg'} borderBottomRightRadius={'$2lg'} bgColor="$white">
                 <HStack mt='$16' gap='$5' alignItems="center">
-                    <Box w='$14' h='$14' backgroundColor="$shape" rounded='$xl' />
+                    <Image
+                        w='$14' 
+                        h='$14'
+                        rounded='$xl'
+                        source={{
+                            uri: 'https://github.com/luisbett.png',
+                        }}
+                        alt="Profile picture"
+                    />
                     <VStack>
                         <Text fontFamily="$heading" color='$gray500' mb='$1'>Olá, Luis!</Text>
-                        <Link href="./profile" title="Ver perfil"/>
+                        <Link href="./profile" title="Ver perfil" arrowPosition="right"/>
                     </VStack>
                 </HStack>
 
@@ -77,6 +85,7 @@ export default function Products() {
                         icon={FilterVerticalIcon}
                         variant="outline"
                         onPress={handleOpenDrawer}
+                        w='$10'
                     />
                 </HStack>
             </VStack>

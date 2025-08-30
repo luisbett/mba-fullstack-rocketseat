@@ -75,10 +75,10 @@ export default function SignUp() {
                     placeholder="Confirme a senha" 
                 />
                 
-                <Button title="Cadastrar" mt='$10' withArrow onPress={handleSignUp} />
+                <Button title="Cadastrar" w='$full' mt='$10' withArrow onPress={handleSignUp} />
 
                 <Text mt='$15'>Já tem uma conta?</Text>
-                <Button mt='$5' title="Acessar" variant="outline" withArrow onPress={() => router.back()} />
+                <Button mt='$5' w='$full' title="Acessar" variant="outline" withArrow onPress={() => router.back()} />
             </VStack>
         </ScrollView>
     )

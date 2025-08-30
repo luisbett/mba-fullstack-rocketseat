@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 
 import { useFonts, DMSans_700Bold } from '@expo-google-fonts/dm-sans'
-import { Poppins_400Regular } from '@expo-google-fonts/poppins'
+import { Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'
 
 import { Center, GluestackUIProvider, Heading, Text, VStack } from '@gluestack-ui/themed'
 import { config } from '../../config/gluestack-ui.config'
@@ -15,7 +15,7 @@ import { Button } from "@/components/button";
 import Logo from '@/assets/logo.svg'
 
 export default function Index() {
-    const [ fontsLoaded ] = useFonts({ DMSans_700Bold, Poppins_400Regular })
+    const [ fontsLoaded ] = useFonts({ DMSans_700Bold, Poppins_400Regular, Poppins_700Bold })
 
     function handleSignUp() {
         router.navigate('/sign-up')
@@ -53,10 +53,10 @@ export default function Index() {
                         placeholder="Sua senha" 
                     />
                     
-                    <Button title="Acessar" mt='$10' withArrow onPress={handleSignIn} />
+                    <Button title="Acessar" mt='$10' w='$full' withArrow onPress={handleSignIn} />
 
                     <Text mt='$41'>Ainda não tem uma conta?</Text>
-                    <Button mt='$5' title="Cadastrar" variant="outline" withArrow onPress={handleSignUp} />
+                    <Button mt='$5' w='$full' title="Cadastrar" variant="outline" withArrow onPress={handleSignUp} />
                 </VStack>
             ) : (
                 <Loading />
