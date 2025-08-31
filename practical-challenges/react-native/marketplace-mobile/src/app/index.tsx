@@ -53,7 +53,7 @@ export default function Index() {
                         placeholder="Sua senha" 
                     />
                     
-                    <Button title="Acessar" mt='$10' w='$full' withArrow onPress={handleSignIn} />
+                    <Button title="Acessar" mt='$5' w='$full' withArrow onPress={handleSignIn} />
 
                     <Text mt='$41'>Ainda não tem uma conta?</Text>
                     <Button mt='$5' w='$full' title="Cadastrar" variant="outline" withArrow onPress={handleSignUp} />

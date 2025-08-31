@@ -1,14 +1,40 @@
-import { Box, HStack, Image, ScrollView, Text, VStack } from "@gluestack-ui/themed";
+import { useState } from "react";
 
-import { FilterVerticalIcon, Search01Icon } from "@hugeicons/core-free-icons";
+import { Pressable } from "react-native";
 
-import { Card } from "@/components/card";
+import { 
+    Actionsheet,
+    ActionsheetBackdrop, 
+    ActionsheetContent, 
+    ActionsheetDragIndicator, 
+    ActionsheetDragIndicatorWrapper,
+    Checkbox, 
+    CheckboxIndicator,
+    CheckboxIcon, 
+    CheckboxLabel, 
+    CheckIcon, 
+    Heading, 
+    HStack, 
+    Image, 
+    ScrollView, 
+    Text, 
+    VStack 
+} from "@gluestack-ui/themed";
+
+import { HugeiconsIcon } from "@hugeicons/react-native";
+import { Cancel01Icon, FilterVerticalIcon, Search01Icon } from "@hugeicons/core-free-icons";
+
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
+import { Card } from "@/components/card";
 import { Link } from "@/components/link";
 
 export default function Products() {
-    function handleOpenDrawer() {}
+    const [actionSheetOpened, setActionSheetOpened] = useState(false)
+
+    function handleClearFilters() {}
+
+    function handleFilter() {}
 
     const cards = [
         {
@@ -84,7 +110,7 @@ export default function Products() {
                     <Button
                         icon={FilterVerticalIcon}
                         variant="outline"
-                        onPress={handleOpenDrawer}
+                        onPress={() => setActionSheetOpened(true)}
                         w='$10'
                     />
                 </HStack>
@@ -96,6 +122,93 @@ export default function Products() {
                     ))}
                 </HStack>
             </ScrollView>
+            <Actionsheet isOpen={actionSheetOpened} onClose={() => setActionSheetOpened(false)}>
+                <ActionsheetBackdrop />
+                <ActionsheetContent>
+                    <ActionsheetDragIndicatorWrapper>
+                        <ActionsheetDragIndicator />
+                    </ActionsheetDragIndicatorWrapper>
+                    <VStack w='$full' pt='$12' pb='$8' px='$6'>
+                        <HStack pb='$6' justifyContent="space-between" alignItems="flex-start">
+                            <Heading>Filtrar anúncios</Heading>
+                            <Pressable onPress={() => setActionSheetOpened(false)}>
+                                <HugeiconsIcon icon={Cancel01Icon} color='#666666' />
+                            </Pressable>
+                        </HStack>
+                        <Text fontFamily='$heading' fontSize={'$sm'} color="$gray400" mb='$2'>Valor</Text>
+                        <HStack gap='$5.5' mb='$6'>
+                            <Input 
+                                placeholder="De"
+                                inputFlex={1}
+                                keyboardType="numeric"
+                            />
+                            <Input 
+                                placeholder="Até"
+                                inputFlex={1}
+                                keyboardType="numeric"
+                            />
+                        </HStack>
+                        <Text fontFamily='$heading' fontSize='$sm' color="$gray400" mb='$5'>Categoria</Text>
+                        <VStack gap='$3' mb='$16'>
+                            <Checkbox value="1" size="md" gap='$2'>
+                                <CheckboxIndicator borderWidth={1} $checked-bgColor="$orangebase" $checked-borderColor="$orangedark">
+                                    <CheckboxIcon as={CheckIcon} color="$white" />
+                                </CheckboxIndicator>
+                                <CheckboxLabel color="$gray400">Brinquedo</CheckboxLabel>
+                            </Checkbox>
+                            <Checkbox value="1" size="md" gap='$2'>
+                                <CheckboxIndicator borderWidth={1} $checked-bgColor="$orangebase" $checked-borderColor="$orangedark">
+                                    <CheckboxIcon as={CheckIcon} color="$white" />
+                                </CheckboxIndicator>
+                                <CheckboxLabel color="$gray400">Móvel</CheckboxLabel>
+                            </Checkbox>
+                            <Checkbox value="1" size="md" gap='$2'>
+                                <CheckboxIndicator borderWidth={1} $checked-bgColor="$orangebase" $checked-borderColor="$orangedark">
+                                    <CheckboxIcon as={CheckIcon} color="$white" />
+                                </CheckboxIndicator>
+                                <CheckboxLabel color="$gray400">Papelaria</CheckboxLabel>
+                            </Checkbox>
+                            <Checkbox value="1" size="md" gap='$2'>
+                                <CheckboxIndicator borderWidth={1} $checked-bgColor="$orangebase" $checked-borderColor="$orangedark">
+                                    <CheckboxIcon as={CheckIcon} color="$white" />
+                                </CheckboxIndicator>
+                                <CheckboxLabel color="$gray400">Saúde & Beleza</CheckboxLabel>
+                            </Checkbox>
+                            <Checkbox value="1" size="md" gap='$2'>
+                                <CheckboxIndicator borderWidth={1} $checked-bgColor="$orangebase" $checked-borderColor="$orangedark">
+                                    <CheckboxIcon as={CheckIcon} color="$white" />
+                                </CheckboxIndicator>
+                                <CheckboxLabel color="$gray400">Utensílio</CheckboxLabel>
+                            </Checkbox>
+                            <Checkbox value="1" size="md" gap='$2'>
+                                <CheckboxIndicator borderWidth={1} $checked-bgColor="$orangebase" $checked-borderColor="$orangedark">
+                                    <CheckboxIcon as={CheckIcon} color="$white" />
+                                </CheckboxIndicator>
+                                <CheckboxLabel color="$gray400">Vestuário</CheckboxLabel>
+                            </Checkbox>
+                        </VStack>
+                        <HStack gap='$3'>
+                            <Button 
+                                w='50%'
+                                h='$10'
+                                variant="outline" 
+                                title="Limpar filtro" 
+                                titleFontSize={'$sm'} 
+                                justifyContent="center"
+                                onPress={handleClearFilters}
+                            />
+                            <Button 
+                                w='50%'
+                                h='$10' 
+                                title="Filtrar" 
+                                titleFontSize={'$sm'} 
+                                justifyContent="center"
+                                onPress={handleFilter}
+                            />
+                        </HStack>
+                    </VStack>
+                </ActionsheetContent>
+            </Actionsheet>
         </>
     )
 }
