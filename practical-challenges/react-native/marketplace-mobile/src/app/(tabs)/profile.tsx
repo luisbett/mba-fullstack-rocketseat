@@ -1,3 +1,8 @@
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import z from "zod";
+
 import { Center, Heading, Image, VStack } from "@gluestack-ui/themed";
 
 import { AccessIcon, CallIcon, Logout01Icon, Mail02Icon, UserIcon } from "@hugeicons/core-free-icons";
@@ -5,8 +10,31 @@ import { AccessIcon, CallIcon, Logout01Icon, Mail02Icon, UserIcon } from "@hugei
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 
+const updateProfileSchema = z.object({
+    name: z.string().min(1, 'Nome é obrigatório'),
+    phone: z.string().min(1, 'Telefone é obrigatório'),
+    email: z.email('E-mail inválido').min(1, 'E-mail é obrigatório'),
+    oldPassword: z.string().min(1, 'Senha é obrigatória'),
+    newPassword: z.string().min(1, 'Nova senha é obrigatória'),
+})
+
+type UpdateProfileInputs = z.infer<typeof updateProfileSchema>
+
 export default function Profile() {
-    function handleProfileUpdate() {}
+    const { control, handleSubmit, formState: { errors } } = useForm<UpdateProfileInputs>({
+        resolver: zodResolver(updateProfileSchema),
+        defaultValues: {
+            name: '',
+            phone: '',
+            email: '',
+            oldPassword: '',
+            newPassword: ''
+        }
+    })
+
+    function handleProfileUpdate({ name, phone, email, oldPassword, newPassword }: UpdateProfileInputs) {
+        console.log(name, phone, email, oldPassword, newPassword)
+    }
 
     function handleLogout() {}
 
@@ -23,7 +51,6 @@ export default function Profile() {
                     alt="Profile picture"
                 />
             </Center>
-
             <Button
                 icon={Logout01Icon}
                 iconColor='#DC3545'
@@ -34,44 +61,82 @@ export default function Profile() {
                 right='$6'
                 onPress={handleLogout}
             />
-
-            <Input 
-                title='Nome'
-                icon={UserIcon}
-                placeholder="Seu nome completo"
+            <Controller 
+                control={control}
+                name="name"
+                render={({ field: { value, onChange }}) => (
+                    <Input 
+                        title='Nome'
+                        icon={UserIcon}
+                        placeholder="Seu nome completo"
+                        value={value}
+                        onChangeText={onChange}
+                        errorMessage={errors.name?.message}
+                    />
+                )}
             />
-
-            <Input 
-                title='Telefone'
-                icon={CallIcon}
-                placeholder="(00) 00000-0000"
+            <Controller 
+                control={control}
+                name="phone"
+                render={({ field: { value, onChange }}) => (
+                    <Input 
+                        title='Telefone'
+                        icon={CallIcon}
+                        placeholder="(00) 00000-0000"
+                        value={value}
+                        onChangeText={onChange}
+                        errorMessage={errors.phone?.message}
+                    />
+                )}
             />
-
             <Heading fontSize='$md' mt='$5' mb='$5'>Acesso</Heading>
-
-            <Input 
-                title='E-mail'
-                icon={Mail02Icon}
-                placeholder="mail@examplo.br"
-                keyboardType="email-address"
-                autoCapitalize="none"
+            <Controller 
+                control={control}
+                name="email"
+                render={({ field: { value, onChange }}) => (
+                    <Input 
+                        title='E-mail'
+                        icon={Mail02Icon}
+                        placeholder="mail@examplo.br"
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        value={value}
+                        onChangeText={onChange}
+                        errorMessage={errors.email?.message}
+                    />
+                )}
             />
-
-            <Input
-                title='Senha atual'
-                icon={AccessIcon}
-                isPassword
-                placeholder="Sua senha" 
+            <Controller 
+                control={control}
+                name="oldPassword"
+                render={({ field: { value, onChange }}) => (
+                    <Input
+                        title='Senha atual'
+                        icon={AccessIcon}
+                        isPassword
+                        placeholder="Sua senha"
+                        value={value}
+                        onChangeText={onChange}
+                        errorMessage={errors.oldPassword?.message}
+                    />
+                )}
             />
-
-            <Input
-                title='Nova senha'
-                icon={AccessIcon}
-                isPassword
-                placeholder="Sua nova senha"
+            <Controller 
+                control={control}
+                name="newPassword"
+                render={({ field: { value, onChange }}) => (
+                    <Input
+                        title='Nova senha'
+                        icon={AccessIcon}
+                        isPassword
+                        placeholder="Sua nova senha"
+                        value={value}
+                        onChangeText={onChange}
+                        errorMessage={errors.newPassword?.message}
+                    />
+                )}
             />
-            
-            <Button w='$full' title="Atualizar cadastro" mt='$6' onPress={handleProfileUpdate} />
+            <Button w='$full' title="Atualizar cadastro" mt='$6' onPress={handleSubmit(handleProfileUpdate)} />
         </VStack>
     )
 }
