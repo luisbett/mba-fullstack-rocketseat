@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { router } from "expo-router";
 import { useForm, Controller } from 'react-hook-form'
 
@@ -7,10 +8,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useFonts, DMSans_700Bold } from '@expo-google-fonts/dm-sans'
 import { Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins'
 
-import { Center, GluestackUIProvider, Heading, Text, VStack } from '@gluestack-ui/themed'
-import { config } from '../../config/gluestack-ui.config'
+import { Center, Heading, Text, Toast, ToastTitle, useToast, VStack } from '@gluestack-ui/themed'
 
 import { AccessIcon, Mail02Icon } from "@hugeicons/core-free-icons";
+
+import { useAuth } from "@/hooks/useAuth";
+
+import { AppError } from "@/utils/AppError";
 
 import { Loading } from "@/components/loading";
 import { Input } from "@/components/input";
@@ -28,6 +32,12 @@ type SignInInputs = z.infer<typeof signInSchema>
 export default function Index() {
     const [ fontsLoaded ] = useFonts({ DMSans_700Bold, Poppins_400Regular, Poppins_700Bold })
 
+    const [isLoading, setIsLoading] = useState(false)
+
+    const toast = useToast()
+
+    const { signIn, isLoadingSellerData, seller } = useAuth()
+
     const { control, handleSubmit, formState: { errors } } = useForm<SignInInputs>({
         resolver: zodResolver(signInSchema),
         defaultValues: {
@@ -36,13 +46,47 @@ export default function Index() {
         }
     })
 
-    function handleSignIn({ email, password }: SignInInputs) {
-        router.navigate('/(tabs)/products')
+    async function handleSignIn({ email, password }: SignInInputs) {
+        try {
+            setIsLoading(true)
+
+            await signIn(email, password)
+
+            router.navigate('/(tabs)/products')
+        } catch (error) {
+            const isAppError = error instanceof AppError
+
+            const title = isAppError ? error.message : 'Não foi possível entrar. Tente novamente mais tarde.'
+
+            toast.show({
+                placement: 'top',
+                render: ({ id }) => {
+                    const toastId = 'toast-' + id
+                    return (
+                        <Toast 
+                            nativeID={toastId}
+                            action="error"
+                            variant="accent"
+                        >
+                            <ToastTitle textAlign="center">{title}</ToastTitle>
+                        </Toast>
+                    )
+                }
+            })
+        } finally {
+            setIsLoading(false)
+        }
     }
+
+    useEffect(() => {
+        if (seller.id) {
+            router.navigate('/(tabs)/products')
+        }
+    }, [seller])
     
     return (
-        <GluestackUIProvider config={config}>
-            { fontsLoaded ? (
+        <>
+            { fontsLoaded && !isLoadingSellerData ? (
                 <VStack px={'$10'} flex={1}>
                     <Center mt='$16'>
                         <Logo width={'64px'} height={'48px'}/>
@@ -58,7 +102,7 @@ export default function Index() {
                             <Input 
                                 title='E-mail'
                                 icon={Mail02Icon}
-                                placeholder="mail@examplo.br"
+                                placeholder="mail@exemplo.br"
                                 keyboardType="email-address"
                                 autoCapitalize="none"
                                 value={value}
@@ -84,13 +128,13 @@ export default function Index() {
                             />
                         )}
                     />
-                    <Button title="Acessar" mt='$5' w='$full' withArrow onPress={handleSubmit(handleSignIn)} />
+                    <Button title="Acessar" mt='$5' w='$full' withArrow onPress={handleSubmit(handleSignIn)} isLoading={isLoading} />
                     <Text mt='$41'>Ainda não tem uma conta?</Text>
                     <Button mt='$5' w='$full' title="Cadastrar" variant="outline" withArrow onPress={() => router.navigate('/sign-up')} />
                 </VStack>
             ) : (
                 <Loading />
             )}
-        </GluestackUIProvider>
+        </>
     )
 }

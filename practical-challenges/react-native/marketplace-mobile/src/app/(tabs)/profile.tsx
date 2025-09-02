@@ -1,55 +1,139 @@
+import { useState } from "react";
+import { router } from "expo-router";
+
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import z from "zod";
 
-import { Center, Heading, Image, VStack } from "@gluestack-ui/themed";
+import { Center, Heading, Image, Toast, ToastTitle, useToast, VStack } from "@gluestack-ui/themed";
 
-import { AccessIcon, CallIcon, Logout01Icon, Mail02Icon, UserIcon } from "@hugeicons/core-free-icons";
+import { AccessIcon, CallIcon, ImageUpload01Icon, Logout01Icon, Mail02Icon, UserIcon } from "@hugeicons/core-free-icons";
+
+import { api } from "@/services/api";
+
+import { AppError } from "@/utils/AppError";
+
+import { useAuth } from "@/hooks/useAuth";
 
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
+import { Box } from "@gluestack-ui/themed";
+import { HugeiconsIcon } from "@hugeicons/react-native";
 
 const updateProfileSchema = z.object({
     name: z.string().min(1, 'Nome é obrigatório'),
     phone: z.string().min(1, 'Telefone é obrigatório'),
     email: z.email('E-mail inválido').min(1, 'E-mail é obrigatório'),
-    oldPassword: z.string().min(1, 'Senha é obrigatória'),
-    newPassword: z.string().min(1, 'Nova senha é obrigatória'),
+    password: z.string(),
+    newPassword: z.string(),
 })
 
 type UpdateProfileInputs = z.infer<typeof updateProfileSchema>
 
 export default function Profile() {
-    const { control, handleSubmit, formState: { errors } } = useForm<UpdateProfileInputs>({
+    const [isLoading, setIsLoading] = useState(false)
+
+    const toast = useToast()
+
+    const { seller, signOut, updateSeller } = useAuth()
+
+    const { control, handleSubmit, formState: { errors }, reset } = useForm<UpdateProfileInputs>({
         resolver: zodResolver(updateProfileSchema),
-        defaultValues: {
-            name: '',
-            phone: '',
-            email: '',
-            oldPassword: '',
+        values: {
+            name: seller.name,
+            phone: seller.phone,
+            email: seller.email,
+            password: '',
             newPassword: ''
         }
     })
 
-    function handleProfileUpdate({ name, phone, email, oldPassword, newPassword }: UpdateProfileInputs) {
-        console.log(name, phone, email, oldPassword, newPassword)
+    async function handleProfileUpdate({ name, phone, email, password, newPassword }: UpdateProfileInputs) {
+        try {
+            setIsLoading(true)
+
+            const { data } = await api.put('/sellers', {
+                name, phone, email, password, newPassword
+            })
+
+            if(data.seller) {
+                updateSeller(data.seller)
+            }
+
+            toast.show({
+                placement: 'top',
+                render: ({ id }) => {
+                    const toastId = 'toast-' + id
+                    return (
+                        <Toast 
+                            nativeID={toastId}
+                            action="success"
+                            variant="accent"
+                        >
+                            <ToastTitle textAlign="center">Perfil atualizado com sucesso.</ToastTitle>
+                        </Toast>
+                    )
+                }
+            })
+
+            reset()
+        } catch (error) {
+            const isAppError = error instanceof AppError
+            
+            const title = isAppError ? error.message : 'Não foi possível atualizar o perfil. Tente novamente mais tarde.'
+
+            toast.show({
+                placement: 'top',
+                render: ({ id }) => {
+                    const toastId = 'toast-' + id
+                    return (
+                        <Toast 
+                            nativeID={toastId}
+                            action="error"
+                            variant="accent"
+                        >
+                            <ToastTitle textAlign="center">{title}</ToastTitle>
+                        </Toast>
+                    )
+                }
+            })
+        } finally {
+            setIsLoading(false)
+        }
     }
 
-    function handleLogout() {}
+    async function handleLogout() {
+        await signOut()
+        router.replace('/')
+    }
 
     return (
         <VStack flex={1} px={'$10'} mb='$5' position="relative">
             <Center mt='$16' mb='$5'>
-                <Image
-                    w='$30'
-                    h='$30'
-                    rounded='$xl'
-                    source={{
-                        uri: 'https://github.com/luisbett.png',
-                    }}
-                    alt="Profile picture"
-                />
+                { seller.avatar?.url ? (
+                    <Image
+                        w='$30'
+                        h='$30'
+                        rounded='$xl'
+                        source={{
+                            uri: seller.avatar?.url,
+                        }}
+                        alt="Profile picture"
+                    />
+                ) : (
+                    <Box
+                        w='$30'
+                        h='$30'
+                        rounded='$xl'
+                        bgColor="$shape"
+                        justifyContent="center"
+                        alignItems="center"
+                        
+                    >
+                        <HugeiconsIcon icon={ImageUpload01Icon} color='#F24D0D' width='32px' height='32px' />
+                    </Box>
+                )}
             </Center>
             <Button
                 icon={Logout01Icon}
@@ -108,7 +192,7 @@ export default function Profile() {
             />
             <Controller 
                 control={control}
-                name="oldPassword"
+                name="password"
                 render={({ field: { value, onChange }}) => (
                     <Input
                         title='Senha atual'
@@ -117,7 +201,7 @@ export default function Profile() {
                         placeholder="Sua senha"
                         value={value}
                         onChangeText={onChange}
-                        errorMessage={errors.oldPassword?.message}
+                        errorMessage={errors.password?.message}
                     />
                 )}
             />
@@ -136,7 +220,7 @@ export default function Profile() {
                     />
                 )}
             />
-            <Button w='$full' title="Atualizar cadastro" mt='$6' onPress={handleSubmit(handleProfileUpdate)} />
+            <Button w='$full' title="Atualizar cadastro" mt='$6' onPress={handleSubmit(handleProfileUpdate)} isLoading={isLoading} />
         </VStack>
     )
 }

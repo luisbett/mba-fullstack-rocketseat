@@ -4,12 +4,13 @@ import { ComponentProps } from 'react'
 import { Pressable } from 'react-native'
 
 type Props = ComponentProps<typeof GluestackCard> & {
+    id: string
     image: string
     title: string
     price: number
 }
 
-export function Card({ image, title, price, ...rest }: Props) {
+export function Card({ id, image, title, price, ...rest }: Props) {
     return (
         <GluestackCard 
             width='48.5%' 
@@ -32,12 +33,12 @@ export function Card({ image, title, price, ...rest }: Props) {
                     }}
                 alt="image"
                 />
-                <Pressable onPress={() => router.navigate(`/(tabs)/product/33`)}>
+                <Pressable onPress={() => router.navigate(`/(tabs)/product/${id}`)}>
                     <VStack px='$1'>
-                        <Text fontSize='$xs'>{title}</Text>
+                        <Text fontSize='$xs' numberOfLines={1}>{title}</Text>
                         <HStack alignItems="baseline" gap='$1'>
                             <Text fontSize='$2xs' color='$gray500'>R$</Text>
-                            <Heading fontSize='$sm'>{price.toLocaleString('pt-BR')}</Heading>
+                            <Heading fontSize='$sm'>{(price/100).toLocaleString('pt-BR')}</Heading>
                         </HStack>
                     </VStack>
                 </Pressable>

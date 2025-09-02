@@ -1,6 +1,7 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 import { Pressable } from "react-native";
+
+import { api } from "@/services/api";
 
 import { 
     Actionsheet,
@@ -18,82 +19,135 @@ import {
     Image, 
     ScrollView, 
     Text, 
-    VStack 
+    VStack, 
+    useToast,
+    ToastTitle,
+    Toast,
+    Box
 } from "@gluestack-ui/themed";
+
+import { useAuth } from "@/hooks/useAuth";
 
 import { HugeiconsIcon } from "@hugeicons/react-native";
 import { Cancel01Icon, FilterVerticalIcon, Search01Icon } from "@hugeicons/core-free-icons";
+
+import { AppError } from "@/utils/AppError";
 
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { Card } from "@/components/card";
 import { Link } from "@/components/link";
 
+type ProductCardsProps = {
+    id: string
+    title: string
+    priceInCents: number
+    attachments: [{
+        url: string
+    }]
+}
+
 export default function Products() {
     const [actionSheetOpened, setActionSheetOpened] = useState(false)
+    const [productCards, setProductCards] = useState<ProductCardsProps[]>([])
+
+    const { seller } = useAuth()
+
+    const toast = useToast()
+
+    async function handleSearch(search: string) {
+        try {
+            const { data } = await api.get(`/products?search=${search}`)
+
+            if(data.products) {
+                setProductCards(data.products)
+            }
+        } catch (error) {
+            const isAppError = error instanceof AppError
+            
+            const title = isAppError ? error.message : 'Não foi possível carregar os produtos.'
+
+            toast.show({
+                placement: 'top',
+                render: ({ id }) => {
+                    const toastId = 'toast-' + id
+                    return (
+                        <Toast 
+                            nativeID={toastId}
+                            action="error"
+                            variant="accent"
+                        >
+                            <ToastTitle textAlign="center">{title}</ToastTitle>
+                        </Toast>
+                    )
+                }
+            })
+        }
+    }
 
     function handleClearFilters() {}
 
     function handleFilter() {}
 
-    const cards = [
-        {
-            image: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-            title: 'Sofá',
-            price: 3333.33
-        },
-        {
-            image: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-            title: 'Sofá',
-            price: 333.33
-        },
-        {
-            image: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-            title: 'Sofá',
-            price: 333.33
-        },
-        {
-            image: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-            title: 'Sofá',
-            price: 333.33
-        },
-        {
-            image: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-            title: 'Sofá',
-            price: 333.33
-        },
-        {
-            image: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-            title: 'Sofá',
-            price: 333.33
-        },
-        {
-            image: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-            title: 'Sofá',
-            price: 333.33
-        },
-        {
-            image: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-            title: 'Sofá',
-            price: 333.33
+    async function fetchProducts() {
+        try {
+            const { data } = await api.get('/products')
+
+            if(data.products) {
+                setProductCards(data.products)
+            }
+        } catch (error) {
+            const isAppError = error instanceof AppError
+            
+            const title = isAppError ? error.message : 'Não foi possível carregar os produtos.'
+
+            toast.show({
+                placement: 'top',
+                render: ({ id }) => {
+                    const toastId = 'toast-' + id
+                    return (
+                        <Toast 
+                            nativeID={toastId}
+                            action="error"
+                            variant="accent"
+                        >
+                            <ToastTitle textAlign="center">{title}</ToastTitle>
+                        </Toast>
+                    )
+                }
+            })
         }
-    ]
+    }
+
+    useEffect(() => {
+        fetchProducts()
+    }, [])
 
     return (
         <>
             <VStack px={'$6'} borderBottomLeftRadius={'$2lg'} borderBottomRightRadius={'$2lg'} bgColor="$white">
                 <HStack mt='$16' gap='$5' alignItems="center">
-                    <Image
-                        w='$14' 
-                        h='$14'
-                        rounded='$xl'
-                        source={{
-                            uri: 'https://github.com/luisbett.png',
-                        }}
-                        alt="Profile picture"
-                    />
+                    { seller.avatar?.url ? (
+                        <Image
+                            w='$14' 
+                            h='$14'
+                            rounded='$xl'
+                            source={{
+                                uri: seller.avatar.url,
+                            }}
+                            alt="Profile picture"
+                        />
+                    ) : (
+                        <Box 
+                            w='$14' 
+                            h='$14'
+                            rounded='$xl'
+                            bgColor="$shape"
+                        />
+                    ) }
+                    
                     <VStack>
-                        <Text fontFamily="$heading" color='$gray500' mb='$1'>Olá, Luis!</Text>
+                        <Text fontFamily="$heading" color='$gray500' mb='$1'>Olá, {seller.name}!</Text>
                         <Link href="./profile" title="Ver perfil" arrowPosition="right"/>
                     </VStack>
                 </HStack>
@@ -106,6 +160,7 @@ export default function Products() {
                         placeholder="Pesquisar..."
                         inputMarginBottom='$6'
                         inputFlex={1}
+                        onChangeText={handleSearch}
                     />
                     <Button
                         icon={FilterVerticalIcon}
@@ -117,8 +172,8 @@ export default function Products() {
             </VStack>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <HStack py='$3.5' px='$4' flexWrap="wrap" gap='$2' justifyContent="space-between">
-                    { cards.map((item, index) => (
-                        <Card key={index} image={item.image} title={item.title} price={item.price} />
+                    { productCards?.map((item, _index) => (
+                        <Card key={item.id} id={item.id} image={item.attachments[0].url} title={item.title} price={item.priceInCents} />
                     ))}
                 </HStack>
             </ScrollView>

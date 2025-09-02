@@ -21,6 +21,7 @@ export function Button({ title, titleFontSize = '$md', icon, iconColor = '#F24D0
             borderWidth={1}
             borderRadius='$2lg'
             justifyContent={ !withArrow || isLoading ? 'center' : 'space-between' }
+            disabled={isLoading}
             {...rest}
         >
             { isLoading ?
