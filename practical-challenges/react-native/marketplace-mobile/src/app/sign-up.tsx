@@ -5,7 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import z from "zod";
 
-import { Box, Center, Heading, Text, VStack, ScrollView } from "@gluestack-ui/themed";
+import { api } from "@/services/api";
+
+import { AppError } from "@/utils/AppError";
+
+import { Box, Center, Heading, Text, VStack, ScrollView, useToast, Toast, ToastTitle } from "@gluestack-ui/themed";
 
 import { HugeiconsIcon } from "@hugeicons/react-native";
 import { AccessIcon, CallIcon, ImageUpload01Icon, Mail02Icon, UserIcon } from "@hugeicons/core-free-icons";
@@ -20,25 +24,75 @@ const signUpSchema = z.object({
     phone: z.string().min(1, 'Telefone é obrigatório'),
     email: z.email('E-mail inválido').min(1, 'E-mail é obrigatório'),
     password: z.string().min(1, 'Senha é obrigatória'),
-    passwordConfirm: z.string().min(1, 'Confirmação de senha é obrigatória'),
+    passwordConfirmation: z.string().min(1, 'Confirmação de senha é obrigatória'),
 })
 
 type SignUpInputs = z.infer<typeof signUpSchema>
 
 export default function SignUp() {
-    const { control, handleSubmit, formState: { errors } } = useForm<SignUpInputs>({
+    const toast = useToast()
+
+    const { control, handleSubmit, formState: { errors }, reset } = useForm<SignUpInputs>({
         resolver: zodResolver(signUpSchema),
         defaultValues: {
             name: '',
             phone: '',
             email: '',
             password: '',
-            passwordConfirm: ''
+            passwordConfirmation: ''
         }
     })
 
-    function handleSignUp({ name, phone, email, password, passwordConfirm }: SignUpInputs) {
-        console.log(name, phone, email, password, passwordConfirm)
+    async function handleSignUp({ name, phone, email, password, passwordConfirmation }: SignUpInputs) {
+        try {
+            await api.post('/sellers', { 
+                name, 
+                phone, 
+                email, 
+                password, 
+                passwordConfirmation 
+            })
+
+            toast.show({
+                placement: 'top',
+                render: ({ id }) => {
+                    const toastId = 'toast-' + id
+                    return (
+                        <Toast 
+                            nativeID={toastId}
+                            action="success"
+                            variant="accent"
+                            alignItems="center"
+                        >
+                            <ToastTitle textAlign="center">Cadastro realizado com sucesso.</ToastTitle>
+                        </Toast>
+                    )
+                }
+            })
+
+            reset()
+            router.navigate('/')
+        } catch (error) {
+            const isAppError = error instanceof AppError
+
+            const title = isAppError ? error.message : 'Não foi possível criar a conta. Tente novamente mais tarde.'
+
+            toast.show({
+                placement: 'top',
+                render: ({ id }) => {
+                    const toastId = 'toast-' + id
+                    return (
+                        <Toast 
+                            nativeID={toastId}
+                            action="error"
+                            variant="accent"
+                        >
+                            <ToastTitle textAlign="center">{title}</ToastTitle>
+                        </Toast>
+                    )
+                }
+            })
+        }
     }
 
     return (
@@ -126,7 +180,7 @@ export default function SignUp() {
                 />
                 <Controller 
                     control={control}
-                    name="passwordConfirm"
+                    name="passwordConfirmation"
                     render={({ field: { value, onChange }}) => (
                         <Input
                             title='Confirmar senha'
@@ -135,7 +189,7 @@ export default function SignUp() {
                             placeholder="Confirme a senha"
                             value={value}
                             onChangeText={onChange}
-                            errorMessage={errors.passwordConfirm?.message}
+                            errorMessage={errors.passwordConfirmation?.message}
                         />
                     )}
                 />
