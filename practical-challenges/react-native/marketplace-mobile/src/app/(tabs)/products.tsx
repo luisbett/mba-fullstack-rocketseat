@@ -42,14 +42,27 @@ type ProductCardsProps = {
     id: string
     title: string
     priceInCents: number
+    category: [{
+        id: string
+    }]
     attachments: [{
         url: string
     }]
 }
 
+type CategoryProps = {
+    id: string
+    title: string
+    slug: string
+}
+
 export default function Products() {
     const [actionSheetOpened, setActionSheetOpened] = useState(false)
     const [productCards, setProductCards] = useState<ProductCardsProps[]>([])
+    const [priceFrom, setPriceFrom] = useState(0)
+    const [priceTo, setPriceTo] = useState(0)
+    const [categories, setCategories] = useState<CategoryProps[]>([])
+    // const [categoriesSelected, setCategoriesSelected] = useState<string[]>([])
 
     const { seller } = useAuth()
 
@@ -85,9 +98,49 @@ export default function Products() {
         }
     }
 
-    function handleClearFilters() {}
+    async function handleClearFilters() {
+        try {
+            const { data } = await api.get('/products')
 
-    function handleFilter() {}
+            console.log(data.products)
+
+            if(data.products) {
+                setProductCards(data.products)
+            }
+        } catch (error) {
+            const isAppError = error instanceof AppError
+            
+            const title = isAppError ? error.message : 'Não foi possível carregar os produtos.'
+
+            toast.show({
+                placement: 'top',
+                render: ({ id }) => {
+                    const toastId = 'toast-' + id
+                    return (
+                        <Toast 
+                            nativeID={toastId}
+                            action="error"
+                            variant="accent"
+                        >
+                            <ToastTitle textAlign="center">{title}</ToastTitle>
+                        </Toast>
+                    )
+                }
+            })
+        }
+
+        setActionSheetOpened(false)
+    }
+
+    async function handleFilter() {
+        setProductCards(state => state.filter(item => {
+            return (priceFrom > 0 ? item.priceInCents >= priceFrom * 100 : true ) && 
+                (priceTo > 0 ? item.priceInCents <= priceTo * 100 : true) 
+                //(categoriesSelected.length > 0 ? categoriesSelected.includes(item.category[0].id) : true)
+        }))
+
+        setActionSheetOpened(false)
+    }
 
     async function fetchProducts() {
         try {
@@ -119,8 +172,39 @@ export default function Products() {
         }
     }
 
+    async function fetchCategories() {
+        try {
+            const { data } = await api.get('/categories')
+
+            if(data.categories) {
+                setCategories(data.categories)
+            }
+        } catch (error) {
+            const isAppError = error instanceof AppError
+            
+            const title = isAppError ? error.message : 'Não foi possível carregar as categorias.'
+
+            toast.show({
+                placement: 'top',
+                render: ({ id }) => {
+                    const toastId = 'toast-' + id
+                    return (
+                        <Toast 
+                            nativeID={toastId}
+                            action="error"
+                            variant="accent"
+                        >
+                            <ToastTitle textAlign="center">{title}</ToastTitle>
+                        </Toast>
+                    )
+                }
+            })
+        }
+    }
+
     useEffect(() => {
         fetchProducts()
+        fetchCategories()
     }, [])
 
     return (
@@ -145,15 +229,12 @@ export default function Products() {
                             bgColor="$shape"
                         />
                     ) }
-                    
                     <VStack>
                         <Text fontFamily="$heading" color='$gray500' mb='$1'>Olá, {seller.name}!</Text>
                         <Link href="./profile" title="Ver perfil" arrowPosition="right"/>
                     </VStack>
                 </HStack>
-
                 <Text mt='$8' fontSize='$sm' color="$gray500" mb='$1'>Explore produtos</Text>
-
                 <HStack mt='$1' gap='$4.5'>
                     <Input 
                         icon={Search01Icon}
@@ -196,51 +277,25 @@ export default function Products() {
                                 placeholder="De"
                                 inputFlex={1}
                                 keyboardType="numeric"
+                                onChangeText={text => setPriceFrom(Number(text))}
                             />
                             <Input 
                                 placeholder="Até"
                                 inputFlex={1}
                                 keyboardType="numeric"
+                                onChangeText={text => setPriceTo(Number(text))}
                             />
                         </HStack>
                         <Text fontFamily='$heading' fontSize='$sm' color="$gray400" mb='$5'>Categoria</Text>
                         <VStack gap='$3' mb='$16'>
-                            <Checkbox value="1" size="md" gap='$2'>
-                                <CheckboxIndicator borderWidth={1} $checked-bgColor="$orangebase" $checked-borderColor="$orangedark">
-                                    <CheckboxIcon as={CheckIcon} color="$white" />
-                                </CheckboxIndicator>
-                                <CheckboxLabel color="$gray400">Brinquedo</CheckboxLabel>
-                            </Checkbox>
-                            <Checkbox value="1" size="md" gap='$2'>
-                                <CheckboxIndicator borderWidth={1} $checked-bgColor="$orangebase" $checked-borderColor="$orangedark">
-                                    <CheckboxIcon as={CheckIcon} color="$white" />
-                                </CheckboxIndicator>
-                                <CheckboxLabel color="$gray400">Móvel</CheckboxLabel>
-                            </Checkbox>
-                            <Checkbox value="1" size="md" gap='$2'>
-                                <CheckboxIndicator borderWidth={1} $checked-bgColor="$orangebase" $checked-borderColor="$orangedark">
-                                    <CheckboxIcon as={CheckIcon} color="$white" />
-                                </CheckboxIndicator>
-                                <CheckboxLabel color="$gray400">Papelaria</CheckboxLabel>
-                            </Checkbox>
-                            <Checkbox value="1" size="md" gap='$2'>
-                                <CheckboxIndicator borderWidth={1} $checked-bgColor="$orangebase" $checked-borderColor="$orangedark">
-                                    <CheckboxIcon as={CheckIcon} color="$white" />
-                                </CheckboxIndicator>
-                                <CheckboxLabel color="$gray400">Saúde & Beleza</CheckboxLabel>
-                            </Checkbox>
-                            <Checkbox value="1" size="md" gap='$2'>
-                                <CheckboxIndicator borderWidth={1} $checked-bgColor="$orangebase" $checked-borderColor="$orangedark">
-                                    <CheckboxIcon as={CheckIcon} color="$white" />
-                                </CheckboxIndicator>
-                                <CheckboxLabel color="$gray400">Utensílio</CheckboxLabel>
-                            </Checkbox>
-                            <Checkbox value="1" size="md" gap='$2'>
-                                <CheckboxIndicator borderWidth={1} $checked-bgColor="$orangebase" $checked-borderColor="$orangedark">
-                                    <CheckboxIcon as={CheckIcon} color="$white" />
-                                </CheckboxIndicator>
-                                <CheckboxLabel color="$gray400">Vestuário</CheckboxLabel>
-                            </Checkbox>
+                            { categories.map(category => (
+                                <Checkbox key={category.id} value={category.id} size="md" gap='$2' /*onChange={() => setCategoriesSelected(state => state.includes(category.id) ? state.filter(item => item !== category.id) : [...state, category.id])}*/>
+                                    <CheckboxIndicator borderWidth={1} $checked-bgColor="$orangebase" $checked-borderColor="$orangedark">
+                                        <CheckboxIcon as={CheckIcon} color="$white" />
+                                    </CheckboxIndicator>
+                                    <CheckboxLabel color="$gray400">{category.title}</CheckboxLabel>
+                                </Checkbox>
+                            ))}
                         </VStack>
                         <HStack gap='$3'>
                             <Button 
