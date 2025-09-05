@@ -77,12 +77,6 @@ export default function Index() {
             setIsLoading(false)
         }
     }
-
-    useEffect(() => {
-        if (seller.id) {
-            router.navigate('/(tabs)/products')
-        }
-    }, [seller])
     
     return (
         <>
