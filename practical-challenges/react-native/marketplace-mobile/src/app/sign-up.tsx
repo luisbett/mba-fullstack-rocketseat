@@ -24,8 +24,7 @@ import { Pressable } from "react-native";
 import { useState } from "react";
 
 const signUpSchema = z.object({
-    file: z
-    .custom<FileList>(),
+    file: z.custom<FileList>(),
     name: z.string().min(1, 'Nome é obrigatório'),
     phone: z.string().min(1, 'Telefone é obrigatório'),
     email: z.email('E-mail inválido').min(1, 'E-mail é obrigatório'),

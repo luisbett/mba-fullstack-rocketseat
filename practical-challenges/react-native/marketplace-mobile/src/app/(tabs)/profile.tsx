@@ -1,5 +1,8 @@
 import { useState } from "react";
+
 import { router } from "expo-router";
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,8 +23,10 @@ import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { Box } from "@gluestack-ui/themed";
 import { HugeiconsIcon } from "@hugeicons/react-native";
+import { Pressable } from "react-native";
 
 const updateProfileSchema = z.object({
+    file: z.custom<FileList>(),
     name: z.string().min(1, 'Nome é obrigatório'),
     phone: z.string().min(1, 'Telefone é obrigatório'),
     email: z.email('E-mail inválido').min(1, 'E-mail é obrigatório'),
@@ -32,11 +37,12 @@ const updateProfileSchema = z.object({
 type UpdateProfileInputs = z.infer<typeof updateProfileSchema>
 
 export default function Profile() {
+    const { seller, signOut, updateSeller } = useAuth()
+
+    const [userPhoto, setUserPhoto] = useState(seller.avatar?.url ?? '')
     const [isLoading, setIsLoading] = useState(false)
 
     const toast = useToast()
-
-    const { seller, signOut, updateSeller } = useAuth()
 
     const { control, handleSubmit, formState: { errors }, reset } = useForm<UpdateProfileInputs>({
         resolver: zodResolver(updateProfileSchema),
@@ -44,17 +50,39 @@ export default function Profile() {
             name: seller.name,
             phone: seller.phone,
             email: seller.email,
+            file: {} as FileList,
             password: '',
             newPassword: ''
         }
     })
 
-    async function handleProfileUpdate({ name, phone, email, password, newPassword }: UpdateProfileInputs) {
+    async function handleProfileUpdate({ file, name, phone, email, password, newPassword }: UpdateProfileInputs) {
         try {
             setIsLoading(true)
 
+            let fileId = ''
+
+            if (file) {
+                const files = new FormData()
+
+                files.append('files', file as any)
+
+                const { data } = await api.post('/attachments', files, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+
+                fileId = data.attachments[0].id
+            }
+
             const { data } = await api.put('/sellers', {
-                name, phone, email, password, newPassword
+                name, 
+                phone, 
+                email, 
+                avatarId: fileId ? fileId : null,
+                password, 
+                newPassword
             })
 
             if(data.seller) {
@@ -108,32 +136,91 @@ export default function Profile() {
         router.replace('/')
     }
 
+    async function handleUserPhotoSelect(onChange: (file: any) => void) {
+        const photoSelected = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ['images'],
+            quality: 1,
+            aspect: [4,4],
+            allowsEditing: true
+        })
+
+        if(photoSelected.canceled) {
+            return
+        }
+
+        const photoURI = photoSelected.assets[0].uri
+
+        if(photoURI) {
+            const photoInfo = (await FileSystem.getInfoAsync(photoURI)) as {
+                size: number
+            }
+
+            //Check if image is greater than 5MB
+            if(photoInfo.size && (photoInfo.size / 1024 / 1024) > 5) {
+                return toast.show({
+                    placement: 'top',
+                    render: ({ id }) => {
+                        const toastId = 'toast-' + id
+                        return (
+                            <Toast 
+                                nativeID={toastId}
+                                action="error"
+                                variant="accent"
+                            >
+                                <ToastTitle textAlign="center">A imagem deve ter no máximo 5MB de tamanho</ToastTitle>
+                            </Toast>
+                        )
+                    }
+                })
+            }
+
+            const fileExtension = photoURI.split('.').pop()
+
+            setUserPhoto(photoURI)
+
+            // Pass the file object to the form
+            onChange({
+                uri: photoURI,
+                name: photoURI.split('/').pop(),
+                type: `${photoSelected.assets[0].type}/${fileExtension}`,
+            })
+        }
+    }
+
     return (
         <VStack flex={1} px={'$10'} mb='$5' position="relative">
             <Center mt='$16' mb='$5'>
-                { seller.avatar?.url ? (
-                    <Image
-                        w='$30'
-                        h='$30'
-                        rounded='$xl'
-                        source={{
-                            uri: seller.avatar?.url,
-                        }}
-                        alt="Profile picture"
-                    />
-                ) : (
-                    <Box
-                        w='$30'
-                        h='$30'
-                        rounded='$xl'
-                        bgColor="$shape"
-                        justifyContent="center"
-                        alignItems="center"
-                        
-                    >
-                        <HugeiconsIcon icon={ImageUpload01Icon} color='#F24D0D' width='32px' height='32px' />
-                    </Box>
-                )}
+                <Controller 
+                    control={control}
+                    name="file"
+                    render={({ field: { onChange }}) => (
+                        <Pressable onPress={() => handleUserPhotoSelect(onChange)}>
+                            { userPhoto ? (
+                                <Image
+                                    w='$30'
+                                    h='$30'
+                                    rounded='$xl'
+                                    source={{
+                                        uri: userPhoto,
+                                    }}
+                                    alt="Profile picture"
+                                />
+                            ) : (
+                                <Box
+                                    w='$30'
+                                    h='$30'
+                                    rounded='$xl'
+                                    bgColor="$shape"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    
+                                >
+                                    <HugeiconsIcon icon={ImageUpload01Icon} color='#F24D0D' width='32px' height='32px' />
+                                </Box>
+                            )}
+                        </Pressable>
+                    )}
+                />
             </Center>
             <Button
                 icon={Logout01Icon}
