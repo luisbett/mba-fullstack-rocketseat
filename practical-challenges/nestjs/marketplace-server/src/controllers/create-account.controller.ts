@@ -4,6 +4,7 @@ import {
   Controller,
   Post,
   UsePipes,
+  HttpCode,
 } from '@nestjs/common'
 import { hash } from 'bcryptjs'
 import { ZodValidationPipe } from 'src/pipes/zod-validation-pipe'
@@ -24,6 +25,7 @@ export class CreateSellerController {
   constructor(private prisma: PrismaService) {}
 
   @Post()
+  @HttpCode(201)
   @UsePipes(new ZodValidationPipe(createSellerBodySchema))
   async handle(
     @Body()
