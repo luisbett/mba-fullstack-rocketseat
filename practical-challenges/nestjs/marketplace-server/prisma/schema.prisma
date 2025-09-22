@@ -14,12 +14,28 @@ datasource db {
 }
 
 model Seller {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   name     String
-  phone    String @unique
-  email    String @unique
+  phone    String  @unique
+  email    String  @unique
   avatarId String?
   password String
 
+  products Product[]
+
   @@map("sellers")
+}
+
+model Product {
+  id             String   @id @default(uuid())
+  title          String
+  description    String
+  categoryId     String
+  priceInCents   Int
+  attachmentsIds String?
+
+  sellerId String
+  seller   Seller @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+
+  @@map("products")
 }
