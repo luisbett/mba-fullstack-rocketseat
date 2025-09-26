@@ -14,28 +14,62 @@ datasource db {
 }
 
 model Seller {
-  id       String  @id @default(uuid())
+  id       String @id @default(uuid())
   name     String
-  phone    String  @unique
-  email    String  @unique
-  avatarId String?
+  phone    String @unique
+  email    String @unique
   password String
 
+  // Each Seller has exactly 1 Attachment
+  attachmentId String      @unique
+  attachment   Attachments @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
+
+  // A Seller can have many Products
   products Product[]
 
   @@map("sellers")
 }
 
 model Product {
-  id             String   @id @default(uuid())
-  title          String
-  description    String
-  categoryId     String
-  priceInCents   Int
-  attachmentsIds String?
+  id           String @id @default(uuid())
+  title        String
+  description  String
+  priceInCents Int
+  status       String
 
+  // Product belongs to a Seller
   sellerId String
   seller   Seller @relation(fields: [sellerId], references: [id], onDelete: Cascade)
 
+  // Product belongs to a Category
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  // Each Product has exactly 1 Attachment
+  attachmentId String      @unique
+  attachment   Attachments @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
+
   @@map("products")
+}
+
+model Category {
+  id    String @id @default(uuid())
+  title String
+  slug  String @unique()
+
+  // A Category can have many Products
+  products Product[]
+
+  @@map("categories")
+}
+
+model Attachments {
+  id  String @id @default(uuid())
+  url String
+
+  // 1:1 relations (inverse sides)
+  seller  Seller?
+  product Product?
+
+  @@map("attachments")
 }
