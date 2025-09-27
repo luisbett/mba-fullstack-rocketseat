@@ -1,4 +1,10 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  NotFoundException,
+  Post,
+  UseGuards,
+} from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { CurrentUser } from 'src/auth/current-user-decorator'
 import type { UserPayload } from 'src/auth/jwt.strategy'
@@ -11,7 +17,7 @@ const createProductBodySchema = z.object({
   categoryId: z.uuid(),
   description: z.string(),
   priceInCents: z.number(),
-  attachmentsIds: z.string(),
+  attachmentsId: z.string(),
 })
 
 type CreateProductBodySchema = z.infer<typeof createProductBodySchema>
@@ -28,18 +34,70 @@ export class CreateProductController {
     @Body(bodyValidationPipe) body: CreateProductBodySchema,
     @CurrentUser() user: UserPayload,
   ) {
-    const { title, description, categoryId, priceInCents, attachmentsIds } =
-      body
+    const { title, description, categoryId, priceInCents, attachmentsId } = body
 
-    await this.prisma.product.create({
+    const seller = await this.prisma.seller.findUnique({
+      where: {
+        id: user.sub,
+      },
+    })
+
+    if (!seller) {
+      throw new NotFoundException('Seller not found')
+    }
+
+    const category = await this.prisma.category.findUnique({
+      where: {
+        id: categoryId,
+      },
+    })
+
+    if (!category) {
+      throw new NotFoundException('Category not found')
+    }
+
+    const attachment = await this.prisma.attachments.findUnique({
+      where: {
+        id: attachmentsId,
+      },
+    })
+
+    if (!attachment) {
+      throw new NotFoundException('Attachment not found')
+    }
+
+    const response = await this.prisma.product.create({
       data: {
         title,
         description,
-        categoryId,
         priceInCents,
-        attachmentsIds,
+        status: 'available',
+        categoryId,
         sellerId: user.sub,
+        attachmentId: attachmentsId,
+      },
+      include: {
+        owner: {
+          select: {
+            id: true,
+            name: true,
+            phone: true,
+            email: true,
+            avatar: true,
+          },
+        },
+        category: true,
+        attachments: true,
+      },
+      omit: {
+        sellerId: true,
+        categoryId: true,
+        attachmentId: true,
       },
     })
+
+    return {
+      product: response,
+    }
   }
 }

@@ -18,7 +18,7 @@ const authenticateBodySchema = z.object({
 
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 
-@Controller('/sessions')
+@Controller('/sellers/sessions')
 export class AuthenticateController {
   constructor(
     private prisma: PrismaService,
@@ -49,7 +49,7 @@ export class AuthenticateController {
     const accessToken = this.jwt.sign({ sub: user.id })
 
     return {
-      access_token: accessToken,
+      accessToken,
     }
   }
 }

@@ -21,8 +21,8 @@ model Seller {
   password String
 
   // Each Seller has exactly 1 Attachment
-  attachmentId String      @unique
-  attachment   Attachments @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
+  attachmentId String?      @unique
+  avatar       Attachments? @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
 
   // A Seller can have many Products
   products Product[]
@@ -39,7 +39,7 @@ model Product {
 
   // Product belongs to a Seller
   sellerId String
-  seller   Seller @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  owner    Seller @relation(fields: [sellerId], references: [id], onDelete: Cascade)
 
   // Product belongs to a Category
   categoryId String
@@ -47,7 +47,7 @@ model Product {
 
   // Each Product has exactly 1 Attachment
   attachmentId String      @unique
-  attachment   Attachments @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
+  attachments  Attachments @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
 
   @@map("products")
 }
